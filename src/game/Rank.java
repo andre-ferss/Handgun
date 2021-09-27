@@ -15,27 +15,17 @@ import javax.swing.JTable;
 
 import javax.swing.table.DefaultTableModel;
 
-public class Rank extends JFrame {
+public class Rank {
 
 	private JTable table;
-	private JLabel rank;
-	private JButton menu;
 	private DefaultTableModel tablemodel;
 	private JScrollPane scrollpane;
-
-	public static void main(String[] args) {
-		Rank frame = new Rank();
-		frame.setTitle("Rank");
-		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		frame.setSize(800, 800);
-		frame.setLocationRelativeTo(null);
-		frame.setResizable(true);
-		frame.setVisible(true);
-	}
-
+	
 	public Rank() {
+		
 		InicializarComponentes();
 		DefinirEventos();
+		
 	}
 
 	conexao conexao = new conexao();
@@ -44,13 +34,12 @@ public class Rank extends JFrame {
 		try {
 			if (conexao.getConnection()) {
 				tablemodel = new DefaultTableModel(new String[] {}, 0) {
-
 					public boolean isCellEditable(int col, int row) {
 						return false;
 					}
 				};
 				table = new JTable(tablemodel);
-				String query = "select * from dados";
+				String query = "select * from storage";
 				PreparedStatement ps = conexao.c.prepareStatement(query);
 				ResultSet rs = ps.executeQuery();
 				for (int i = 1; i <= rs.getMetaData().getColumnCount(); i++) {
@@ -69,14 +58,19 @@ public class Rank extends JFrame {
 
 		}
 		
-		
-
 		scrollpane = new JScrollPane();
 		scrollpane.setFocusable(false);
+		scrollpane.setBounds(100, 100, 500, 300);
 		scrollpane.setViewportView(table);
-		add(scrollpane);
+		
 	}
 
+	public JScrollPane getScrollPane() {
+		
+		return scrollpane;
+		
+	}
+	
 	private void DefinirEventos() {
 
 	}
