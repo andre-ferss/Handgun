@@ -2,8 +2,12 @@ package game;
 
 import java.awt.*;
 import java.awt.event.*;
+import java.io.IOException;
 import java.util.Timer;
 import java.util.TimerTask;
+
+import javax.sound.sampled.LineUnavailableException;
+import javax.sound.sampled.UnsupportedAudioFileException;
 import javax.swing.*;
 
 public class Jogo extends JFrame implements MouseListener{
@@ -18,6 +22,8 @@ public class Jogo extends JFrame implements MouseListener{
 	private JLabel label, timerField;
 	private JTextField textField = new JTextField();
 	private JButton start, setNickName, mainMenu, guns, levels, rank;
+	
+	SoundGuns sons = new SoundGuns();
 
 	public Jogo() {
 
@@ -159,6 +165,7 @@ public class Jogo extends JFrame implements MouseListener{
 		pane = new JPanel(null);
 		pane.add(timerField);
 		pane.add(label);
+		pane.addMouseListener(this);
 			
 		new PlayGame().start();
 				
@@ -309,8 +316,6 @@ public class Jogo extends JFrame implements MouseListener{
 	
 	public class PlayGame extends Thread implements MouseListener{
 		
-		SoundGuns sons = new SoundGuns();
-		
 		int x = 500, y = 374, randX = 1, randY = 1;
 		
 		public void run() {
@@ -321,7 +326,7 @@ public class Jogo extends JFrame implements MouseListener{
 			try {
 				while(true) {
 					
-					for(int i = 0; i < 300; i++) {
+					for(int i = 0; i <= 300; i++) {
 						
 						label.setBounds(x, y, 300, 300);
 						pane.add(label);
@@ -383,11 +388,10 @@ public class Jogo extends JFrame implements MouseListener{
 		@Override
 		public void mousePressed(MouseEvent e) {
 			
-			sons.AlienPistol();
-			
 			score += 10;
 			x = (int) (Math.random() * 900);
 			y = (int) (Math.random() * 700);
+			sons.AlienPistol();
 			System.out.println("Score: " + score);
 			
 		}
@@ -419,9 +423,8 @@ public class Jogo extends JFrame implements MouseListener{
 
 	@Override
 	public void mousePressed(MouseEvent e) {
-		
+		sons.Blacktail();
 	}
-
 	@Override
 	public void mouseReleased(MouseEvent e) {
 		// TODO Auto-generated method stub

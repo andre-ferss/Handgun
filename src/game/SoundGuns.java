@@ -1,52 +1,210 @@
 package game;
 
-import java.applet.AudioClip;
+import java.io.IOException;
+import javax.sound.sampled.AudioInputStream;
+import javax.sound.sampled.AudioSystem;
+import javax.sound.sampled.Clip;
+import javax.sound.sampled.LineUnavailableException;
+import javax.sound.sampled.UnsupportedAudioFileException;
 
 public class SoundGuns {
+	
+	private AudioInputStream audioStream;
+	private Clip clip;
+	
 	public void AlienPistol() {
-		AudioClip Sound;
-		Sound = java.applet.Applet.newAudioClip(getClass().getResource("/game/sons/alienpistol.wav"));
-		Sound.play();
-		//Sound.stop();
+		
+		try {
+			
+			audioStream = AudioSystem.getAudioInputStream(getClass().getResource("/game/sons/alienpistol.wav"));
+			
+			clip = AudioSystem.getClip();
+			
+			clip.open(audioStream);
+			
+			clip.start();
+			
+		} catch (UnsupportedAudioFileException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}catch (LineUnavailableException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
 	}
 
 	public void Blacktail() {
-		AudioClip Sound;
-		Sound = java.applet.Applet.newAudioClip(getClass().getResource("/game/sons/blacktail.wav"));
-		Sound.play();
+		
+		try {
+			
+			audioStream = AudioSystem.getAudioInputStream(getClass().getResource("/game/sons/blacktail.wav"));
+			
+			clip = AudioSystem.getClip();
+			
+			clip.open(audioStream);
+			
+			clip.start();
+			
+		} catch (UnsupportedAudioFileException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}catch (LineUnavailableException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
 	}
 
 	public void DesertEagle() {
-		AudioClip Sound;
-		Sound = java.applet.Applet.newAudioClip(getClass().getResource("/game/sons/deserteagle.wav"));
-		Sound.play();
+		
+		try {
+			
+			audioStream = AudioSystem.getAudioInputStream(getClass().getResource("/game/sons/deserteagle.wav"));
+			
+			clip = AudioSystem.getClip();
+			
+			clip.open(audioStream);
+			
+			clip.start();
+			
+		} catch (UnsupportedAudioFileException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}catch (LineUnavailableException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
 	}
 
 	public void AK47() {
-		AudioClip Sound;
-		Sound = java.applet.Applet.newAudioClip(getClass().getResource("/game/sons/ak47.wav"));
-		Sound.play();
+
+		try {
+			
+			audioStream = AudioSystem.getAudioInputStream(getClass().getResource("/game/sons/ak47.wav"));
+			
+			clip = AudioSystem.getClip();
+			
+			clip.open(audioStream);
+			
+			clip.start();
+			
+		} catch (UnsupportedAudioFileException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}catch (LineUnavailableException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
 	}
 
 	public void M4() {
-		AudioClip Sound;
-		Sound = java.applet.Applet.newAudioClip(getClass().getResource("/game/sons/m4.wav"));
-		Sound.play();
+	
+		try {
+			
+			audioStream = AudioSystem.getAudioInputStream(getClass().getResource("/game/sons/m4.wav"));
+			
+			clip = AudioSystem.getClip();
+			
+			clip.open(audioStream);
+			
+			clip.start();
+			
+		} catch (UnsupportedAudioFileException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}catch (LineUnavailableException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
 	}
 
 	public void Shotgun() {
-		AudioClip Sound;
-		Sound = java.applet.Applet.newAudioClip(getClass().getResource("/game/sons/shotgun.wav"));
-		Sound.play();
+		
+		try {
+			
+			audioStream = AudioSystem.getAudioInputStream(getClass().getResource("/game/sons/shotgun.wav"));
+			
+			clip = AudioSystem.getClip();
+			
+			clip.open(audioStream);
+			
+			clip.start();
+			
+		} catch (UnsupportedAudioFileException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}catch (LineUnavailableException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
 	}
 	public void mp5() {
-		AudioClip Sound;
-		Sound = java.applet.Applet.newAudioClip(getClass().getResource("/game/sons/mp5.wav"));
-		Sound.play();
+		
+		try {
+			
+			audioStream = AudioSystem.getAudioInputStream(getClass().getResource("/game/sons/mp5.wav"));
+			
+			clip = AudioSystem.getClip();
+			
+			clip.open(audioStream);
+			
+			clip.start();
+			
+		} catch (UnsupportedAudioFileException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}catch (LineUnavailableException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 	public void awp() {
-		AudioClip Sound;
-		Sound = java.applet.Applet.newAudioClip(getClass().getResource("/game/sons/awp.wav"));
-		Sound.play();
+		
+		try {
+			
+			audioStream = AudioSystem.getAudioInputStream(getClass().getResource("/game/sons/awp.wav"));
+			
+			clip = AudioSystem.getClip();
+			
+			clip.open(audioStream);
+			
+			clip.start();
+			
+		} catch (UnsupportedAudioFileException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}catch (LineUnavailableException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 }
