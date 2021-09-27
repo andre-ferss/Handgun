@@ -150,7 +150,7 @@ public class Jogo extends JFrame implements MouseListener{
 	
 	public JPanel game() {
 		
-		img = new ImageIcon("C:\\Users\\CLIENTE\\Downloads\\rocketz.jpg");
+		img = new ImageIcon(getClass().getResource("/game/imagens/ghost.gif"));
 		label = new JLabel(img);
 		
 		timerField = new JLabel("100");
@@ -309,6 +309,8 @@ public class Jogo extends JFrame implements MouseListener{
 	
 	public class PlayGame extends Thread implements MouseListener{
 		
+		SoundGuns sons = new SoundGuns();
+		
 		int x = 500, y = 374, randX = 1, randY = 1;
 		
 		public void run() {
@@ -321,7 +323,7 @@ public class Jogo extends JFrame implements MouseListener{
 					
 					for(int i = 0; i < 300; i++) {
 						
-						label.setBounds(x, y, 32, 32);
+						label.setBounds(x, y, 300, 300);
 						pane.add(label);
 						Thread.sleep(difficulty);
 						
@@ -380,6 +382,8 @@ public class Jogo extends JFrame implements MouseListener{
 
 		@Override
 		public void mousePressed(MouseEvent e) {
+			
+			sons.AlienPistol();
 			
 			score += 10;
 			x = (int) (Math.random() * 900);
