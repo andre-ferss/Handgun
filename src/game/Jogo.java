@@ -2,6 +2,7 @@ package game;
 
 import java.awt.*;
 import java.awt.event.*;
+import java.io.File;
 import java.io.IOException;
 import java.util.Timer;
 import java.util.TimerTask;
@@ -9,19 +10,26 @@ import java.util.TimerTask;
 import javax.sound.sampled.LineUnavailableException;
 import javax.sound.sampled.UnsupportedAudioFileException;
 import javax.swing.*;
+import javax.swing.border.Border;
 
 public class Jogo extends JFrame implements MouseListener{
-
+	
 	private int score, difficulty;
 	private JPanel pane;
 	private String name;
 	private JComboBox comboBox;
-	private ImageIcon img;
+	private ImageIcon img,imgmira,imgaim,imgcenario4,imgtag,btstart,btnickname,btlevels,btrank,btguns,imgname,imgbackgroundnick;
 	private Rank globalRank;
 	private Container container;
-	private JLabel label, timerField;
+	private JLabel label, timerField,mira,aim,namegame,cenario4,tag,backgroundnick;
 	private JTextField textField = new JTextField();
 	private JButton start, setNickName, mainMenu, guns, levels, rank;
+	private JRadioButton rbBlacktail, rbAlienPistol, rbDeagle,rbShotgun, rbMP5, rbAWP, rbM4, rbAK,
+	fase1, fase2, fase3, fase4, fase5;
+	private ButtonGroup bg;
+	
+	static Font newFont;
+	static GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
 	
 	SoundGuns sons = new SoundGuns();
 
@@ -36,43 +44,70 @@ public class Jogo extends JFrame implements MouseListener{
 		
 		container = getContentPane();
 		
-		pane = new JPanel(null);
+		sons.maintheme();
 		
+		pane = new JPanel(null);
+		imgaim = new ImageIcon(getClass().getResource("/game/imagens/aim.gif"));
+		aim = new JLabel(imgaim);
+		aim.setBounds(0,0,800,600);
+		
+		
+		imgmira = new ImageIcon(getClass().getResource("/game/imagens/crosshair.gif"));
+		mira = new JLabel(imgmira);
+		mira.setBounds(180,350,150,150);
+		
+		imgname = new ImageIcon(getClass().getResource("/game/imagens/name.png"));
+		namegame = new JLabel(imgname);
+		namegame.setBounds(360,160,400,400);
+		pane.add(namegame);
 		
 		comboBox = new JComboBox(new String[] {"Normal", "Hard", "Overkill"});
-		comboBox.setBounds(700, 400, 100, 20);
+		comboBox.setBounds(690, 10, 100, 30);
 		comboBox.setFocusable(false);
+		comboBox.setOpaque(true);
+		comboBox.setBorder(null);
+		comboBox.setBackground(Color.black);
+		comboBox.setForeground(Color.WHITE);
+		comboBox.setFont(new Font(newFont.getName(),newFont.getStyle(),20));
 		pane.add(comboBox);
 		
-		start = new JButton("Start");
+		btstart = new ImageIcon(getClass().getResource("/game/imagens/btstart.jpg"));
+		start = new JButton(btstart);
 		start.setFocusable(false);
-		start.setBounds(352, 400, 300, 30);
+		start.setBounds(350, 550, 100, 35);
+		start.setFont(new Font(newFont.getName(),newFont.getStyle(),25));
 		pane.add(start);
 		
-		setNickName = new JButton("Nickname");
+		btnickname = new ImageIcon(getClass().getResource("/game/imagens/btnickname.jpg"));
+		setNickName = new JButton(btnickname);
 		setNickName.setFocusable(false);
-		setNickName.setBounds(352, 450, 300, 30);
+		setNickName.setBounds(200, 405, 100, 35);
 		pane.add(setNickName);
 		
-		levels = new JButton("Levels");
+		btlevels = new ImageIcon(getClass().getResource("/game/imagens/btlevels.jpg"));
+		levels = new JButton(btlevels);
 		levels.setFocusable(false);
-		levels.setBounds(352, 500, 300, 30);
+		levels.setBounds(30, 60, 100, 35);
 		pane.add(levels);
 		
-		rank = new JButton("Global Rank");
+		btrank = new ImageIcon(getClass().getResource("/game/imagens/btrank.jpg"));
+		rank = new JButton(btrank);
 		rank.setFocusable(false);
-		rank.setBounds(352, 550, 300, 30);
+		rank.setBounds(10, 10, 100, 35);
 		pane.add(rank);
 		
-		guns = new JButton("Guns");
+		btguns = new ImageIcon(getClass().getResource("/game/imagens/btguns.jpg"));
+		guns = new JButton(btguns);
 		guns.setFocusable(false);
-		guns.setBounds(352, 600, 300, 30);
+		guns.setBounds(50, 110, 100, 35);
 		pane.add(guns);
+		
+		pane.add(mira);
+		pane.add(aim);
 		
 		mainMenu = new JButton("Main Menu");
 		
 		container.add(pane);
-		
 	}
 
 	private void definirEventos() {
@@ -135,7 +170,26 @@ public class Jogo extends JFrame implements MouseListener{
 				
 			}
 		});
+		guns.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				
+				container.removeAll();
+				container.add(guns());
+				container.validate();
+				
+			}
+		});
 		
+		
+		levels.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				
+				container.removeAll();
+				container.add(levels());
+				container.validate();
+				
+			}
+		});
 	}
 	
 	public JPanel mainMenu() {
@@ -149,6 +203,9 @@ public class Jogo extends JFrame implements MouseListener{
 		pane.add(levels);
 		pane.add(rank);
 		pane.add(guns);
+		pane.add(mira);
+		pane.add(namegame);
+		pane.add(aim);
 		
 		return pane;
 		
@@ -159,11 +216,16 @@ public class Jogo extends JFrame implements MouseListener{
 		img = new ImageIcon(getClass().getResource("/game/imagens/ghost.gif"));
 		label = new JLabel(img);
 		
+		imgcenario4 = new ImageIcon(getClass().getResource("/game/imagens/cenario4.jpg"));
+		cenario4 = new JLabel(imgcenario4);
+		cenario4.setBounds(0,0,800,600);
+		
 		timerField = new JLabel("100");
 		timerField.setBounds(980, 10, 50, 50);
 		
 		pane = new JPanel(null);
 		pane.add(timerField);
+		
 		pane.add(label);
 		pane.addMouseListener(this);
 			
@@ -175,12 +237,29 @@ public class Jogo extends JFrame implements MouseListener{
 	
 	public JPanel nickName() {
 		
-		textField.setBounds(300, 100, 300, 30);
+		imgbackgroundnick= new ImageIcon(getClass().getResource("/game/imagens/backgroundnickname.gif"));
+		backgroundnick = new JLabel(imgbackgroundnick);
+		backgroundnick.setBounds(0,0,800,600);
+		
+		textField.setBounds(275, 135, 155, 30);
+		textField.setOpaque(false);
+		textField.setFont(new Font(newFont.getName(),newFont.getStyle(),18));
+		textField.setForeground(Color.BLACK);
+		textField.setBorder(BorderFactory.createMatteBorder(0, 0, 2, 0, Color.black));
 		
 		label = new JLabel();
-		label.setBounds(300, 50, 300, 30);
+		label.setFont(new Font(newFont.getName(),newFont.getStyle(),30));
+		label.setForeground(Color.BLACK);
+		label.setBounds(250, 70, 300, 30);
 		
-		start.setBounds(352, 400, 300, 30);
+		imgtag = new ImageIcon(getClass().getResource("/game/imagens/nameTag.png"));
+		tag = new JLabel(imgtag);
+		tag.setBounds(200,0,400,300);
+		
+		start.setBounds(350, 400, 100, 35);
+		
+		
+		mainMenu.setBounds(10,10,50,30);
 		
 		new AnimatedTextLabel(label, "Enter your nick name: ").start();
 		
@@ -188,6 +267,9 @@ public class Jogo extends JFrame implements MouseListener{
 		pane.add(textField);
 		pane.add(start);
 		pane.add(label);
+		pane.add(tag);
+		pane.add(mainMenu);
+		pane.add(backgroundnick);
 		
 		return pane;
 		
@@ -213,28 +295,113 @@ public class Jogo extends JFrame implements MouseListener{
 	
 	public JPanel guns() {
 	
-		pane = new JPanel();
-	
-	
+		pane = new JPanel(null);
+		
+		label = new JLabel("Escolha uma arma");
+		
+	    rbBlacktail = new JRadioButton("Blacktail");
+	    rbAlienPistol = new JRadioButton("AlienPistol");
+	    rbDeagle = new JRadioButton("Deagle");
+	    rbShotgun = new JRadioButton("Shotgun");
+	    rbMP5 = new JRadioButton("MP5");
+	    rbAWP = new JRadioButton("AWP");
+	    rbM4 = new JRadioButton("M4");
+	    rbAK = new JRadioButton("AK-47");
+		
+		bg = new ButtonGroup();
+		bg.add(rbBlacktail);
+		bg.add(rbAlienPistol);
+		bg.add(rbDeagle);
+		bg.add(rbShotgun);
+		bg.add(rbMP5);
+		bg.add(rbAWP);
+		bg.add(rbM4);
+		bg.add(rbAK);
+		
+		label.setBounds(450, 50, 130, 20);
+		
+		rbBlacktail.setBounds(150, 150, 100, 20);
+		rbAlienPistol.setBounds(450, 150, 100, 20);
+		rbDeagle.setBounds(750, 150, 100, 20);
+		rbShotgun.setBounds(150, 300, 100, 20);
+		rbMP5.setBounds(450, 300, 100, 20);
+		rbAWP.setBounds(750, 300, 100, 20);
+		rbM4.setBounds(300, 450, 100, 20);
+		rbAK.setBounds(650, 450, 100, 20);
+		
+		pane.add(label);
+		pane.add(rbBlacktail);
+		pane.add(rbAlienPistol);
+		pane.add(rbDeagle);
+		pane.add(rbShotgun);
+		pane.add(rbMP5);
+		pane.add(rbAWP);
+		pane.add(rbM4);
+		pane.add(rbAK);
+		pane.add(mainMenu);
+
 		return pane;
 	
 }
 
 	public JPanel levels() {
 	
-		pane =  new JPanel();
+		pane =  new JPanel(null);
 	
+		label = new JLabel("Fases");
+		
+		fase1 = new JRadioButton("Fase 1");
+		fase2 = new JRadioButton("Fase 2");
+		fase3 = new JRadioButton("Fase 3");
+		fase4 = new JRadioButton("Fase 4");
+		fase5 = new JRadioButton("Fase 5");
+		
+		bg = new ButtonGroup();
+		
+		bg.add(fase1);
+		bg.add(fase2);
+		bg.add(fase3);
+		bg.add(fase4);
+		bg.add(fase5);
+		
+		label.setBounds(450, 50, 130, 20);
+		
+		fase1.setBounds(100, 200, 80, 20);
+		fase2.setBounds(280, 200, 80, 20);
+		fase3.setBounds(460, 200, 80, 20);
+		fase4.setBounds(640, 200, 80, 20);
+		fase5.setBounds(820, 200, 80, 20);
+		
+		pane.add(label);
+		pane.add(fase1);
+		pane.add(fase2);
+		pane.add(fase3);
+		pane.add(fase4);
+		pane.add(fase5);
+		pane.add(mainMenu);
+		
 		return pane;
 	
 }
 
 	public static void main(String[] args) {
 		
+		try {
+			
+			newFont = Font.createFont(Font.TRUETYPE_FONT, new File("Adventure.otf")).deriveFont(12f);
+			ge.registerFont(newFont);
+			
+		}catch(FontFormatException e) {
+			
+		}catch(IOException e) {
+			
+		}
+		
 		Jogo frame = new Jogo();
 		frame.setTitle("Hand-Gun");
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.setUndecorated(true);
-		frame.setSize(1024, 768);
+		frame.setSize(800, 600);
 		frame.setLocationRelativeTo(null);
 		frame.setResizable(false);
 		frame.setVisible(true);
@@ -330,6 +497,7 @@ public class Jogo extends JFrame implements MouseListener{
 						
 						label.setBounds(x, y, 300, 300);
 						pane.add(label);
+						pane.add(cenario4);
 						Thread.sleep(difficulty);
 						
 						if(timerField.getText().equals("0")) break;
@@ -341,9 +509,9 @@ public class Jogo extends JFrame implements MouseListener{
 								randY = (int) (Math.random() * 5) + 1;
 							}
 							
-							if(x <= 0 || x >= 1024 || y <= 0 || y >= 768) {
-								x = (int) (Math.random() * 900);
-								y = (int) (Math.random() * 700);
+							if(x <= 0 || x >= 800 || y <= 0 || y >= 600) {
+								x = (int) (Math.random() * 400);
+								y = (int) (Math.random() * 300);
 								randX *= -1;
 								if(randY < 0) {
 									randY *= -1;
@@ -356,9 +524,9 @@ public class Jogo extends JFrame implements MouseListener{
 							continue;
 						}
 						
-						if(x <= 0 || x >= 1024 || y <= 0 || y >= 768) {
-							x = (int) (Math.random() * 900);
-							y = (int) (Math.random() * 700);
+						if(x <= 0 || x >= 800 || y <= 0 || y >= 600) {
+							x = (int) (Math.random() * 400);
+							y = (int) (Math.random() * 300);
 							randY *= -1;
 							if(randX < 0) {
 								randX *= -1;
@@ -389,8 +557,8 @@ public class Jogo extends JFrame implements MouseListener{
 		public void mousePressed(MouseEvent e) {
 			
 			score += 10;
-			x = (int) (Math.random() * 900);
-			y = (int) (Math.random() * 700);
+			x = (int) (Math.random() * 400);
+			y = (int) (Math.random() * 300);
 			sons.AlienPistol();
 			System.out.println("Score: " + score);
 			

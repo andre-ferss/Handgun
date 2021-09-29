@@ -39,7 +39,7 @@ public class Rank {
 					}
 				};
 				table = new JTable(tablemodel);
-				String query = "select * from estoque";
+				String query = "select * from dados";
 				PreparedStatement ps = conexao.c.prepareStatement(query);
 				ResultSet rs = ps.executeQuery();
 				for (int i = 1; i <= rs.getMetaData().getColumnCount(); i++) {
