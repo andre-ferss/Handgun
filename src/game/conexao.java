@@ -6,7 +6,7 @@ public class conexao{
 	
 	public Connection c = null;
 	private final String driver = "com.mysql.jdbc.Driver";
-	private final String dbname = "java";
+	private final String dbname = "handgun";
 	private final String url = "jdbc:mysql://localhost:3306/"+dbname;
 	private final String login = "root";
 	private final String senha = "";
