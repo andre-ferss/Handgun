@@ -241,6 +241,8 @@ public class SoundGuns {
 			
 			clip.open(audioStream);
 			
+			clip.loop(Clip.LOOP_CONTINUOUSLY);
+			
 			clip.start();
 			
 		} catch (UnsupportedAudioFileException e) {
@@ -253,5 +255,11 @@ public class SoundGuns {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+	}
+	
+	public Clip getClip() {
+		
+		return clip;
+		
 	}
 }

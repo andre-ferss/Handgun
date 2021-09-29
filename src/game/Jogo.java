@@ -6,30 +6,25 @@ import java.io.File;
 import java.io.IOException;
 import java.util.Timer;
 import java.util.TimerTask;
-
-import javax.sound.sampled.LineUnavailableException;
-import javax.sound.sampled.UnsupportedAudioFileException;
 import javax.swing.*;
-import javax.swing.border.Border;
 
 public class Jogo extends JFrame implements MouseListener{
 	
-	private int score, difficulty;
 	private JPanel pane;
 	private String name;
-	private JComboBox comboBox;
-	private ImageIcon img,imgmira,imgaim,imgcenario4,imgtag,btstart,btnickname,btlevels,btrank,btguns,imgname,imgbackgroundnick;
+	private ButtonGroup bg;
 	private Rank globalRank;
+	private JComboBox comboBox;
 	private Container container;
-	private JLabel label, timerField,mira,aim,namegame,cenario4,tag,backgroundnick;
+	private int score, difficulty;
 	private JTextField textField = new JTextField();
 	private JButton start, setNickName, mainMenu, guns, levels, rank;
-	private JRadioButton rbBlacktail, rbAlienPistol, rbDeagle,rbShotgun, rbMP5, rbAWP, rbM4, rbAK,
-	fase1, fase2, fase3, fase4, fase5;
-	private ButtonGroup bg;
+	private JLabel label, timerField, mira, aim, namegame, cenario4, tag, backgroundnick;
+	private JRadioButton rbBlacktail, rbAlienPistol, rbDeagle,rbShotgun, rbMP5, rbAWP, rbM4, rbAK, fase1, fase2, fase3, fase4, fase5;
+	private ImageIcon img, imgmira, imgaim, imgcenario4, imgtag, btstart, btnickname, btlevels, btrank, btguns, imgname, imgbackgroundnick;
 	
-	static Font newFont;
-	static GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
+	private Font newFont;
+	private GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
 	
 	SoundGuns sons = new SoundGuns();
 
@@ -42,15 +37,24 @@ public class Jogo extends JFrame implements MouseListener{
 
 	private void inicializarComponentes() {
 		
+		try {
+			newFont = Font.createFont(Font.TRUETYPE_FONT, new File("fonts\\Adventure.otf"));
+		} catch (FontFormatException | IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		ge.registerFont(newFont);
+		
 		container = getContentPane();
 		
 		sons.maintheme();
 		
 		pane = new JPanel(null);
+		
 		imgaim = new ImageIcon(getClass().getResource("/game/imagens/aim.gif"));
 		aim = new JLabel(imgaim);
-		aim.setBounds(0,0,800,600);
-		
+		aim.setBounds(0, 0, 800, 600);
 		
 		imgmira = new ImageIcon(getClass().getResource("/game/imagens/crosshair.gif"));
 		mira = new JLabel(imgmira);
@@ -58,7 +62,7 @@ public class Jogo extends JFrame implements MouseListener{
 		
 		imgname = new ImageIcon(getClass().getResource("/game/imagens/name.png"));
 		namegame = new JLabel(imgname);
-		namegame.setBounds(360,160,400,400);
+		namegame.setBounds(360, 160, 400, 400);
 		pane.add(namegame);
 		
 		comboBox = new JComboBox(new String[] {"Normal", "Hard", "Overkill"});
@@ -68,14 +72,13 @@ public class Jogo extends JFrame implements MouseListener{
 		comboBox.setBorder(null);
 		comboBox.setBackground(Color.black);
 		comboBox.setForeground(Color.WHITE);
-		comboBox.setFont(new Font(newFont.getName(),newFont.getStyle(),20));
+		comboBox.setFont(new Font(newFont.getName(), newFont.getStyle(), 20));
 		pane.add(comboBox);
 		
 		btstart = new ImageIcon(getClass().getResource("/game/imagens/btstart.jpg"));
 		start = new JButton(btstart);
 		start.setFocusable(false);
 		start.setBounds(350, 550, 100, 35);
-		start.setFont(new Font(newFont.getName(),newFont.getStyle(),25));
 		pane.add(start);
 		
 		btnickname = new ImageIcon(getClass().getResource("/game/imagens/btnickname.jpg"));
@@ -108,6 +111,7 @@ public class Jogo extends JFrame implements MouseListener{
 		mainMenu = new JButton("Main Menu");
 		
 		container.add(pane);
+		
 	}
 
 	private void definirEventos() {
@@ -190,11 +194,20 @@ public class Jogo extends JFrame implements MouseListener{
 				
 			}
 		});
+		
 	}
 	
 	public JPanel mainMenu() {
 		
+		if(!sons.getClip().isRunning()) {
+			
+			sons.maintheme();
+			
+		}
+		
 		pane = new JPanel(null);
+		
+		start.setBounds(350, 550, 100, 35);
 		
 		pane.add(comboBox);
 		pane.add(start);
@@ -213,24 +226,28 @@ public class Jogo extends JFrame implements MouseListener{
 	
 	public JPanel game() {
 		
+		sons.getClip().stop();
+		
 		img = new ImageIcon(getClass().getResource("/game/imagens/ghost.gif"));
 		label = new JLabel(img);
 		
 		imgcenario4 = new ImageIcon(getClass().getResource("/game/imagens/cenario4.jpg"));
 		cenario4 = new JLabel(imgcenario4);
-		cenario4.setBounds(0,0,800,600);
+		cenario4.setBounds(0, 0, 800, 600);
 		
 		timerField = new JLabel("100");
-		timerField.setBounds(980, 10, 50, 50);
+		timerField.setBounds(750, 10, 30, 30);
+		timerField.setForeground(Color.WHITE);
+		timerField.setFont(new Font(newFont.getName(), newFont.getStyle(), 20));
 		
 		pane = new JPanel(null);
 		pane.add(timerField);
 		
 		pane.add(label);
-		pane.addMouseListener(this);
-			
+		pane.add(cenario4);
+		
 		new PlayGame().start();
-				
+		
 		return pane;
 		
 	}
@@ -241,9 +258,9 @@ public class Jogo extends JFrame implements MouseListener{
 		backgroundnick = new JLabel(imgbackgroundnick);
 		backgroundnick.setBounds(0,0,800,600);
 		
-		textField.setBounds(275, 135, 155, 30);
+		textField.setBounds(276, 135, 155, 30);
 		textField.setOpaque(false);
-		textField.setFont(new Font(newFont.getName(),newFont.getStyle(),18));
+		textField.setFont(new Font(newFont.getName(), newFont.getStyle(), 18));
 		textField.setForeground(Color.BLACK);
 		textField.setBorder(BorderFactory.createMatteBorder(0, 0, 2, 0, Color.black));
 		
@@ -257,9 +274,7 @@ public class Jogo extends JFrame implements MouseListener{
 		tag.setBounds(200,0,400,300);
 		
 		start.setBounds(350, 400, 100, 35);
-		
-		
-		mainMenu.setBounds(10,10,50,30);
+		mainMenu.setBounds(10, 10, 200, 30);
 		
 		new AnimatedTextLabel(label, "Enter your nick name: ").start();
 		
@@ -283,7 +298,6 @@ public class Jogo extends JFrame implements MouseListener{
 		label.setFont(new Font("Arial", Font.BOLD, 14));
 		globalRank = new Rank();
 		
-		
 		pane.add(label, BorderLayout.NORTH);
 		pane.add(globalRank.getScrollPane(), BorderLayout.CENTER);
 		pane.add(mainMenu, BorderLayout.SOUTH);
@@ -299,14 +313,16 @@ public class Jogo extends JFrame implements MouseListener{
 		
 		label = new JLabel("Escolha uma arma");
 		
-	    rbBlacktail = new JRadioButton("Blacktail");
-	    rbAlienPistol = new JRadioButton("AlienPistol");
-	    rbDeagle = new JRadioButton("Deagle");
-	    rbShotgun = new JRadioButton("Shotgun");
-	    rbMP5 = new JRadioButton("MP5");
-	    rbAWP = new JRadioButton("AWP");
-	    rbM4 = new JRadioButton("M4");
-	    rbAK = new JRadioButton("AK-47");
+		mainMenu.setBounds(10, 10, 200, 30);
+		
+		rbBlacktail = new JRadioButton("Blacktail");
+		rbAlienPistol = new JRadioButton("AlienPistol");
+		rbDeagle = new JRadioButton("Deagle");
+		rbShotgun = new JRadioButton("Shotgun");
+		rbMP5 = new JRadioButton("MP5");
+		rbAWP = new JRadioButton("AWP");
+		rbM4 = new JRadioButton("M4");
+		rbAK = new JRadioButton("AK-47");
 		
 		bg = new ButtonGroup();
 		bg.add(rbBlacktail);
@@ -350,6 +366,8 @@ public class Jogo extends JFrame implements MouseListener{
 	
 		label = new JLabel("Fases");
 		
+		mainMenu.setBounds(10, 10, 200, 30);
+		
 		fase1 = new JRadioButton("Fase 1");
 		fase2 = new JRadioButton("Fase 2");
 		fase3 = new JRadioButton("Fase 3");
@@ -385,17 +403,6 @@ public class Jogo extends JFrame implements MouseListener{
 }
 
 	public static void main(String[] args) {
-		
-		try {
-			
-			newFont = Font.createFont(Font.TRUETYPE_FONT, new File("Adventure.otf")).deriveFont(12f);
-			ge.registerFont(newFont);
-			
-		}catch(FontFormatException e) {
-			
-		}catch(IOException e) {
-			
-		}
 		
 		Jogo frame = new Jogo();
 		frame.setTitle("Hand-Gun");
@@ -451,7 +458,9 @@ public class Jogo extends JFrame implements MouseListener{
 				timerField.setText("" + setInterval(timer));
 
 				try {
-
+					
+					Thread.sleep(200);
+					
 					if (Integer.parseInt(timerField.getText()) == 0) { 
 						
 						container.removeAll();
@@ -459,8 +468,6 @@ public class Jogo extends JFrame implements MouseListener{
 						container.validate();
 						
 					}
-
-					Thread.sleep(200);
 
 				} catch (InterruptedException e) {
 
@@ -475,7 +482,7 @@ public class Jogo extends JFrame implements MouseListener{
 	
 	private final int setInterval(Timer timer) {
 		
-		if(Integer.parseInt(timerField.getText()) == 0) timer.cancel();
+		if(Integer.parseInt(timerField.getText()) == 1) timer.cancel();
 		
 		return Integer.parseInt(timerField.getText()) -1;
 		
@@ -489,6 +496,7 @@ public class Jogo extends JFrame implements MouseListener{
 			
 			startCountDown();
 			label.addMouseListener(this);
+			pane.addMouseListener(this);
 			
 			try {
 				while(true) {
@@ -556,11 +564,16 @@ public class Jogo extends JFrame implements MouseListener{
 		@Override
 		public void mousePressed(MouseEvent e) {
 			
-			score += 10;
-			x = (int) (Math.random() * 400);
-			y = (int) (Math.random() * 300);
+			if(e.getSource().equals(label)) {
+				
+				score += 10;
+				x = (int) (Math.random() * 400);
+				y = (int) (Math.random() * 300);
+				System.out.println("Score: " + score);
+				
+			}
+			
 			sons.AlienPistol();
-			System.out.println("Score: " + score);
 			
 		}
 
@@ -591,7 +604,7 @@ public class Jogo extends JFrame implements MouseListener{
 
 	@Override
 	public void mousePressed(MouseEvent e) {
-		sons.Blacktail();
+		
 	}
 	@Override
 	public void mouseReleased(MouseEvent e) {
@@ -612,5 +625,4 @@ public class Jogo extends JFrame implements MouseListener{
 	}
 	
 }
-
 
