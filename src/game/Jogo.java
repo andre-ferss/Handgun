@@ -6,27 +6,25 @@ import java.io.File;
 import java.io.IOException;
 import java.util.Timer;
 import java.util.TimerTask;
+import javax.sound.sampled.Clip;
 import javax.swing.*;
 
 public class Jogo extends JFrame implements MouseListener {
-
-	private Rank r;
+	
 	private JPanel pane;
-	private String name;
 	private Rank globalRank;
 	private JComboBox comboBox;
 	private Container container;
-	private int score, difficulty;
+	private static Rank r = new Rank();
+	private int score, difficulty, width = 100, height = 100;
 	private JTextField textField = new JTextField();
-	private JButton start, setNickName, mainMenu, guns, levels, rank, startbd, btdelete;
-	private ImageIcon alvo1, alvo2, alvo3, alvo4, alvo5, alvo6, alvo7, alvo8, imgcenario2, imgcenario3, imgcenario4,
-	imgcenario5, icocenario1, icocenario2, icocenario3, icocenario4, icocenario5, imgmira, imgaim, imgcenario,
-	imgcenario1, imgtag, btstart, imgdelete, btnickname, btlevels, btrank, btguns, imgname, imgfundonickname,
-	imgfundolevels, imgfundoguns, imgbrilhos, imgcaveirinha, imgtiro, imgawp, imgak47, imgblacktail, imgdeagle,
-	imgshotgun, imgm4, imgmp5, namearea, imgmainMenu;
-	private JLabel label, cenario1, cenario2, cenario3, cenario4, cenario5, timerField, mira, aim, namegame, tag,
-	fundonickname, fundolevels, fundoguns, brilhos, caveirinha, tiro, awp, ak47, blacktail, shotgun, deagle, m4,
-	mp5, fase1, fase2, fase3, fase4, fase5;
+	private JButton start, setNickName, mainMenu, guns, levels, rank, btdelete;
+	private String name, gun = "", cenarioNome = "cenario1", alvoNome = "among";
+	private ImageIcon alvo, cenarioImg, icocenario1, icocenario2, icocenario3, icocenario4, icocenario5, imgmira, imgaim,
+	imgtag, btstart, imgdelete, btnickname, btlevels, btrank, btguns, imgname, imgfundonickname, imgfundolevels, imgfundoguns, 
+	imgbrilhos, imgcaveirinha, imgtiro, imgawp, imgak47, imgblacktail, imgdeagle, imgshotgun, imgm4, imgmp5, namearea, imgmainMenu;
+	private JLabel label, cenario, scoreField, timerField, mira, aim, namegame, tag, fundonickname, fundolevels, fundoguns, brilhos, caveirinha,
+	tiro, awp, ak47, blacktail, shotgun, deagle, m4, mp5, fase1, fase2, fase3, fase4, fase5;
 
 	private Font newFont;
 	private GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
@@ -115,9 +113,9 @@ public class Jogo extends JFrame implements MouseListener {
 		pane.add(guns);
 
 		btstart = new ImageIcon(getClass().getResource("/game/imagens/btstart.jpg"));
-		startbd = new JButton(btstart);
-		startbd.setBounds(350, 550, 100, 35);
-		pane.add(startbd);
+		start = new JButton(btstart);
+		start.setBounds(350, 550, 100, 35);
+		pane.add(start);
 
 		pane.add(mira);
 		pane.add(aim);
@@ -135,7 +133,7 @@ public class Jogo extends JFrame implements MouseListener {
 
 	private void definirEventos() {
 
-		startbd.addActionListener(new ActionListener() {
+		start.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 
 				score = 0;
@@ -152,23 +150,14 @@ public class Jogo extends JFrame implements MouseListener {
 					break;
 				}
 
-				r = new Rank();
-				if (!r.conexao.getConnection()) {
-					JOptionPane.showMessageDialog(null, "falha na conexao");
-					System.exit(0);
-				}
-
-				if (textField.getText().equals(""))
-					name = "Player Unknown";
-
-				else
-					name = textField.getText();
+				if (textField.getText().equals("")) name = "Player Unknown";
+				else name = textField.getText();
 
 				System.out.println("Nickname: " + name);
 
 				r.dados.setNickname(name);
 
-				JOptionPane.showMessageDialog(null, r.atualizar(Rank.INCLUSAO));
+				System.out.println(r.atualizar(Rank.INCLUSAO));
 
 				container.removeAll();
 				container.add(game());
@@ -192,7 +181,7 @@ public class Jogo extends JFrame implements MouseListener {
 
 				r.dados.setNickname(name);
 
-				JOptionPane.showMessageDialog(null, r.atualizar(Rank.EXCLUSAO));
+				System.out.println(r.atualizar(Rank.EXCLUSAO));
 
 			}
 		});
@@ -281,44 +270,30 @@ public class Jogo extends JFrame implements MouseListener {
 
 		sons.getClip().stop();
 
-		alvo1 = new ImageIcon(getClass().getResource("/game/imagens/among.gif"));
-		alvo2 = new ImageIcon(getClass().getResource("/game/imagens/ghost.gif"));
-		alvo3 = new ImageIcon(getClass().getResource("/game/imagens/powergroot.gif"));
-		alvo4 = new ImageIcon(getClass().getResource("/game/imagens/star.gif"));
-		alvo5 = new ImageIcon(getClass().getResource("/game/imagens/tubarao.gif"));
+		alvo = new ImageIcon(getClass().getResource("/game/imagens/" + alvoNome + ".gif"));
+		label = new JLabel(alvo);
 
-		label = new JLabel(alvo1);
+		cenarioImg= new ImageIcon(getClass().getResource("/game/imagens/" + cenarioNome + ".jpg"));
+		
+		cenario = new JLabel(cenarioImg);
+		cenario.setBounds(0, 0, 800, 600);
 
-		imgcenario1 = new ImageIcon(getClass().getResource("/game/imagens/cenario1.jpg"));
-		cenario1 = new JLabel(imgcenario1);
-		cenario1.setBounds(0, 0, 1067, 600);
-
-		imgcenario2 = new ImageIcon(getClass().getResource("/game/imagens/cenario2.jpg"));
-		cenario2 = new JLabel(imgcenario1);
-		cenario2.setBounds(0, 0, 1067, 600);
-
-		imgcenario3 = new ImageIcon(getClass().getResource("/game/imagens/cenario3.jpg"));
-		cenario3 = new JLabel(imgcenario1);
-		cenario3.setBounds(0, 0, 1067, 600);
-
-		imgcenario4 = new ImageIcon(getClass().getResource("/game/imagens/cenario4.jpg"));
-		cenario4 = new JLabel(imgcenario1);
-		cenario4.setBounds(0, 0, 1067, 600);
-
-		imgcenario5 = new ImageIcon(getClass().getResource("/game/imagens/cenario5.jpg"));
-		cenario5 = new JLabel(imgcenario1);
-		cenario5.setBounds(0, 0, 1067, 600);
-
+		scoreField = new JLabel("Score: 0");
+		scoreField.setBounds(20, 10, 150, 30);
+		scoreField.setForeground(Color.WHITE);
+		scoreField.setFont(new Font(newFont.getName(), newFont.getStyle(), 20));
+		
 		timerField = new JLabel("100");
 		timerField.setBounds(750, 10, 30, 30);
 		timerField.setForeground(Color.WHITE);
 		timerField.setFont(new Font(newFont.getName(), newFont.getStyle(), 20));
 
 		pane = new JPanel(null);
+		pane.add(scoreField);
 		pane.add(timerField);
 
 		pane.add(label);
-		pane.add(cenario1);
+		pane.add(cenario);
 
 		new PlayGame().start();
 
@@ -351,14 +326,14 @@ public class Jogo extends JFrame implements MouseListener {
 		tiro = new JLabel(imgtiro);
 		tiro.setBounds(212, 271, 63, 60);
 
-		startbd.setBounds(250, 500, 100, 35);
+		start.setBounds(250, 500, 100, 35);
 		mainMenu.setBounds(20, 20, 100, 35);
 
 		new AnimatedTextLabel(label, "Enter your nick name: ").start();
 
 		pane = new JPanel(null);
 		pane.add(textField);
-		pane.add(startbd);
+		pane.add(start);
 		pane.add(btdelete);
 		pane.add(label);
 		pane.add(tiro);
@@ -373,12 +348,8 @@ public class Jogo extends JFrame implements MouseListener {
 	public JPanel globalRank() {
 
 		pane = new JPanel(new BorderLayout());
-
-		label = new JLabel("Score " + score);
-		label.setFont(new Font("Arial", Font.BOLD, 14));
 		globalRank = new Rank();
 
-		pane.add(label, BorderLayout.NORTH);
 		pane.add(globalRank.getScrollPane(), BorderLayout.CENTER);
 		pane.add(mainMenu, BorderLayout.SOUTH);
 
@@ -399,7 +370,7 @@ public class Jogo extends JFrame implements MouseListener {
 
 		namearea = new ImageIcon(getClass().getResource("/game/imagens/gunsmith.png"));
 		label = new JLabel(namearea);
-		label.setBounds(550, 0, 318, 100);
+		label.setBounds(520, 0, 318, 100);
 		pane.add(label);
 
 		imgak47 = new ImageIcon(getClass().getResource("/game/imagens/ak47.gif"));
@@ -408,7 +379,8 @@ public class Jogo extends JFrame implements MouseListener {
 		ak47.setVerticalTextPosition(JLabel.BOTTOM);
 		ak47.setFont(new Font(newFont.getName(), newFont.getStyle(), 30));
 		ak47.setForeground(Color.WHITE);
-		ak47.setBounds(80, 240, 200, 250);
+		ak47.setBounds(80, 240, 200, 200);
+		ak47.addMouseListener(this);
 		pane.add(ak47);
 
 		imgawp = new ImageIcon(getClass().getResource("/game/imagens/awp.gif"));
@@ -417,7 +389,8 @@ public class Jogo extends JFrame implements MouseListener {
 		awp.setVerticalTextPosition(JLabel.BOTTOM);
 		awp.setFont(new Font(newFont.getName(), newFont.getStyle(), 30));
 		awp.setForeground(Color.WHITE);
-		awp.setBounds(250, 0, 200, 250);
+		awp.setBounds(250, 0, 200, 200);
+		awp.addMouseListener(this);
 		pane.add(awp);
 
 		imgdeagle = new ImageIcon(getClass().getResource("/game/imagens/deagle.gif"));
@@ -426,7 +399,8 @@ public class Jogo extends JFrame implements MouseListener {
 		deagle.setVerticalTextPosition(JLabel.BOTTOM);
 		deagle.setFont(new Font(newFont.getName(), newFont.getStyle(), 30));
 		deagle.setForeground(Color.WHITE);
-		deagle.setBounds(320, 380, 200, 250);
+		deagle.setBounds(320, 380, 200, 200);
+		deagle.addMouseListener(this);
 		pane.add(deagle);
 
 		imgshotgun = new ImageIcon(getClass().getResource("/game/imagens/shotgun.gif"));
@@ -435,7 +409,8 @@ public class Jogo extends JFrame implements MouseListener {
 		shotgun.setVerticalTextPosition(JLabel.BOTTOM);
 		shotgun.setFont(new Font(newFont.getName(), newFont.getStyle(), 30));
 		shotgun.setForeground(Color.WHITE);
-		shotgun.setBounds(420, 150, 200, 250);
+		shotgun.setBounds(420, 150, 200, 200);
+		shotgun.addMouseListener(this);
 		pane.add(shotgun);
 
 		imgblacktail = new ImageIcon(getClass().getResource("/game/imagens/blacktail.gif"));
@@ -444,7 +419,8 @@ public class Jogo extends JFrame implements MouseListener {
 		blacktail.setVerticalTextPosition(JLabel.BOTTOM);
 		blacktail.setFont(new Font(newFont.getName(), newFont.getStyle(), 30));
 		blacktail.setForeground(Color.WHITE);
-		blacktail.setBounds(630, 300, 200, 250);
+		blacktail.setBounds(630, 300, 200, 150);
+		blacktail.addMouseListener(this);
 		pane.add(blacktail);
 
 		imgm4 = new ImageIcon(getClass().getResource("/game/imagens/m4.gif"));
@@ -453,7 +429,8 @@ public class Jogo extends JFrame implements MouseListener {
 		m4.setVerticalTextPosition(JLabel.BOTTOM);
 		m4.setFont(new Font(newFont.getName(), newFont.getStyle(), 30));
 		m4.setForeground(Color.WHITE);
-		m4.setBounds(0, 30, 200, 250);
+		m4.setBounds(0, 30, 200, 200);
+		m4.addMouseListener(this);
 		pane.add(m4);
 
 		imgmp5 = new ImageIcon(getClass().getResource("/game/imagens/mp5.gif"));
@@ -462,7 +439,8 @@ public class Jogo extends JFrame implements MouseListener {
 		mp5.setVerticalTextPosition(JLabel.BOTTOM);
 		mp5.setFont(new Font(newFont.getName(), newFont.getStyle(), 30));
 		mp5.setForeground(Color.WHITE);
-		mp5.setBounds(580, 30, 200, 250);
+		mp5.setBounds(580, 30, 200, 200);
+		mp5.addMouseListener(this);
 		pane.add(mp5);
 
 		pane.add(fundoguns);
@@ -484,34 +462,37 @@ public class Jogo extends JFrame implements MouseListener {
 		fundolevels = new JLabel(imgfundolevels);
 		fundolevels.setBounds(0, 0, 800, 600);
 
-		imgcenario = new ImageIcon(getClass().getResource("/game/imagens/cenario1.jpg"));
-
 		mainMenu.setBounds(20, 20, 100, 35);
 		pane.add(mainMenu);
 
-		icocenario1 = new ImageIcon(getClass().getResource("/game/imagens/ico1.jpg"));
+		icocenario1 = new ImageIcon(getClass().getResource("/game/imagens/cenario1Icon.jpg"));
 		fase1 = new JLabel(icocenario1);
 		fase1.setBounds(80, 300, 150, 100);
+		fase1.addMouseListener(this);
 		pane.add(fase1);
 
-		icocenario2 = new ImageIcon(getClass().getResource("/game/imagens/ico2.jpg"));
+		icocenario2 = new ImageIcon(getClass().getResource("/game/imagens/cenario2Icon.jpg"));
 		fase2 = new JLabel(icocenario2);
 		fase2.setBounds(320, 300, 150, 100);
+		fase2.addMouseListener(this);
 		pane.add(fase2);
 
-		icocenario3 = new ImageIcon(getClass().getResource("/game/imagens/ico3.jpg"));
+		icocenario3 = new ImageIcon(getClass().getResource("/game/imagens/cenario3Icon.jpg"));
 		fase3 = new JLabel(icocenario3);
 		fase3.setBounds(560, 300, 150, 100);
+		fase3.addMouseListener(this);
 		pane.add(fase3);
 
-		icocenario4 = new ImageIcon(getClass().getResource("/game/imagens/ico4.jpg"));
+		icocenario4 = new ImageIcon(getClass().getResource("/game/imagens/cenario4Icon.jpg"));
 		fase4 = new JLabel(icocenario4);
 		fase4.setBounds(200, 450, 150, 100);
+		fase4.addMouseListener(this);
 		pane.add(fase4);
 
-		icocenario5 = new ImageIcon(getClass().getResource("/game/imagens/ico5.jpg"));
+		icocenario5 = new ImageIcon(getClass().getResource("/game/imagens/cenario5Icon.jpg"));
 		fase5 = new JLabel(icocenario5);
 		fase5.setBounds(450, 450, 150, 100);
+		fase5.addMouseListener(this);
 		pane.add(fase5);
 
 		pane.add(fundolevels);
@@ -529,7 +510,7 @@ public class Jogo extends JFrame implements MouseListener {
 		frame.setLocationRelativeTo(null);
 		frame.setResizable(false);
 		frame.setVisible(true);
-
+		
 	}
 
 	public class AnimatedTextLabel extends Thread {
@@ -581,12 +562,6 @@ public class Jogo extends JFrame implements MouseListener {
 
 					if (Integer.parseInt(timerField.getText()) == 0) {
 
-						r = new Rank();
-						if (!r.conexao.getConnection()) {
-							JOptionPane.showMessageDialog(null, "falha na conexao");
-							System.exit(0);
-						}
-
 						System.out.println("pontuacao atualizada!: " + name + score);
 
 						r.dados.setScore(score);
@@ -613,8 +588,7 @@ public class Jogo extends JFrame implements MouseListener {
 
 	private final int setInterval(Timer timer) {
 
-		if (Integer.parseInt(timerField.getText()) == 1)
-			timer.cancel();
+		if (Integer.parseInt(timerField.getText()) == 1) timer.cancel();
 
 		return Integer.parseInt(timerField.getText()) - 1;
 
@@ -631,17 +605,17 @@ public class Jogo extends JFrame implements MouseListener {
 			pane.addMouseListener(this);
 
 			try {
+		
 				while (true) {
 
 					for (int i = 0; i <= 300; i++) {
 
-						label.setBounds(x, y, 300, 300);
+						label.setBounds(x, y, width, height);
 						pane.add(label);
-						pane.add(cenario1);
+						pane.add(cenario);
 						Thread.sleep(difficulty);
 
-						if (timerField.getText().equals("0"))
-							break;
+						if (timerField.getText().equals("0")) break;
 
 						if (i <= 150) {
 
@@ -665,22 +639,20 @@ public class Jogo extends JFrame implements MouseListener {
 							continue;
 						}
 
-						if (x <= 0 || x >= 800 || y <= 0 || y >= 600) {
-							x = (int) (Math.random() * 400);
-							y = (int) (Math.random() * 300);
-							randY *= -1;
-							if (randX < 0) {
-								randX *= -1;
-							}
+					if (x <= 0 || x >= 800 || y <= 0 || y >= 600) {
+						x = (int) (Math.random() * 400);
+						y = (int) (Math.random() * 300);
+						randY *= -1;
+						if (randX < 0) {
+							randX *= -1;
 						}
-
-						x -= randX;
-						y -= randY;
 					}
 
-					if (timerField.getText().equals("0"))
+					x -= randX;
+					y -= randY;
+					}
 
-						break;
+				if (timerField.getText().equals("0")) break;
 				}
 
 			} catch (Exception e) {
@@ -699,40 +671,210 @@ public class Jogo extends JFrame implements MouseListener {
 		public void mousePressed(MouseEvent e) {
 
 			if (e.getSource().equals(label)) {
-
+				
 				score += 10;
 				x = (int) (Math.random() * 400);
 				y = (int) (Math.random() * 300);
-				System.out.println("Score: " + score);
+				scoreField.setText("Score: " + score);
 
 			}
-
-			sons.AlienPistol();
-
+			
+			switch(gun) {
+			
+				case "Blacktail":
+					sons.Blacktail();
+					break;
+				case "Desert Eagle":
+					sons.DesertEagle();
+					break;
+				case "Ak-47":
+					sons.AK47();
+					break;
+				case "M4":
+					sons.M4();
+					break;
+				case "Shotgun":
+					sons.Shotgun();
+					break;
+				case "MP5":
+					sons.mp5();
+					break;
+				case "AWP":
+					sons.awp();
+					break;
+				default:
+					sons.AlienPistol();
+					break;
+			}
 		}
 
 		@Override
 		public void mouseReleased(MouseEvent e) {
 			// TODO Auto-generated method stub
-
+		
 		}
 
 		@Override
 		public void mouseEntered(MouseEvent e) {
 			// TODO Auto-generated method stub
+		
 		}
 
 		@Override
 		public void mouseExited(MouseEvent e) {
-			// TODO Auto-generated method stub
-
+			// TODO Auto-generated method stub	
 		}
-
+			
 	}
 
 	@Override
 	public void mouseClicked(MouseEvent e) {
-
+		
+		
+		if(e.getClickCount() == 2) {
+		
+			if(((JLabel)(e.getSource())).getText() != null) {
+			
+				((JLabel)(e.getSource())).setForeground(Color.GREEN); 
+				gun = ((JLabel)(e.getSource())).getText();
+				
+				switch(((JLabel)(e.getSource())).getText()) {
+				
+					case "Blacktail":
+						awp.setForeground(Color.WHITE);
+						ak47.setForeground(Color.WHITE);
+						shotgun.setForeground(Color.WHITE);
+						deagle.setForeground(Color.WHITE);
+						m4.setForeground(Color.WHITE);
+						mp5.setForeground(Color.WHITE);
+						break;
+					case "Desert Eagle":
+						awp.setForeground(Color.WHITE);
+						ak47.setForeground(Color.WHITE);
+						shotgun.setForeground(Color.WHITE);
+						blacktail.setForeground(Color.WHITE);
+						m4.setForeground(Color.WHITE);
+						mp5.setForeground(Color.WHITE);
+						break;
+					case "Ak-47":
+						awp.setForeground(Color.WHITE);
+						deagle.setForeground(Color.WHITE);
+						shotgun.setForeground(Color.WHITE);
+						blacktail.setForeground(Color.WHITE);
+						m4.setForeground(Color.WHITE);
+						mp5.setForeground(Color.WHITE);
+						break;
+					case "M4":
+						awp.setForeground(Color.WHITE);
+						deagle.setForeground(Color.WHITE);
+						shotgun.setForeground(Color.WHITE);
+						blacktail.setForeground(Color.WHITE);
+						ak47.setForeground(Color.WHITE);
+						mp5.setForeground(Color.WHITE);
+						break;
+					case "Shotgun":
+						awp.setForeground(Color.WHITE);
+						deagle.setForeground(Color.WHITE);
+						m4.setForeground(Color.WHITE);
+						blacktail.setForeground(Color.WHITE);
+						ak47.setForeground(Color.WHITE);
+						mp5.setForeground(Color.WHITE);
+						break;
+					case "MP5":
+						awp.setForeground(Color.WHITE);
+						deagle.setForeground(Color.WHITE);
+						shotgun.setForeground(Color.WHITE);
+						blacktail.setForeground(Color.WHITE);
+						ak47.setForeground(Color.WHITE);
+						shotgun.setForeground(Color.WHITE);
+						break;
+					case "AWP":
+						m4.setForeground(Color.WHITE);
+						deagle.setForeground(Color.WHITE);
+						shotgun.setForeground(Color.WHITE);
+						blacktail.setForeground(Color.WHITE);
+						ak47.setForeground(Color.WHITE);
+						mp5.setForeground(Color.WHITE);
+						break;
+						
+				}
+			
+			}
+			
+			if(((JLabel)(e.getSource())).getText() == null) {
+			
+				((JLabel)(e.getSource())).setBorder(BorderFactory.createMatteBorder(3, 3, 3, 3, Color.GREEN)); 
+			
+				cenarioNome = (((JLabel)(e.getSource())).getIcon().toString().substring((((JLabel)(e.getSource())).getIcon().toString().length() - 16), (((JLabel)(e.getSource())).getIcon().toString().length() - 8)));
+			
+				switch(cenarioNome) {
+			
+					case "cenario1":
+						alvoNome = "among";
+						width = 100;
+						height = 100;
+						fase2.setBorder(null);
+						fase3.setBorder(null);
+						fase4.setBorder(null);
+						fase5.setBorder(null);
+						break;
+					case "cenario2":
+						alvoNome = "powergroot";
+						width = 125;
+						height = 180;
+						fase1.setBorder(null);
+						fase3.setBorder(null);
+						fase4.setBorder(null);
+						fase5.setBorder(null);
+						break;
+					case "cenario3":
+						alvoNome = "ghost";
+						width = 130;
+						height = 150;
+						fase2.setBorder(null);
+						fase1.setBorder(null);
+						fase4.setBorder(null);
+						fase5.setBorder(null);
+						break;
+					case "cenario4":
+						alvoNome = "star";
+						width = 180;
+						height = 180;
+						fase2.setBorder(null);
+						fase1.setBorder(null);
+						fase3.setBorder(null);
+						fase5.setBorder(null);
+						break;
+					case "cenario5":
+						alvoNome = "tubarao";
+						width = 100;
+						height = 130;
+						fase2.setBorder(null);
+						fase3.setBorder(null);
+						fase4.setBorder(null);
+						fase1.setBorder(null);
+						break;
+				}
+			
+			}
+			
+		}else {
+			
+			if(((JLabel)(e.getSource())).getText() != null) {
+				
+				((JLabel)(e.getSource())).setForeground(Color.WHITE);
+				gun = "";
+			
+			}
+			
+			if(((JLabel)(e.getSource())).getText() == null) {
+				
+				((JLabel)(e.getSource())).setBorder(null); 
+				cenarioNome = "cenario1";
+			}
+			
+		}
+		
 	}
 
 	@Override

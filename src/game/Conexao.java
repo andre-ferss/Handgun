@@ -4,7 +4,7 @@ import java.sql.*;
 import javax.swing.JOptionPane;
 public class Conexao{
 	
-	public Connection c = null;
+	public Connection c;
 	private final String driver = "com.mysql.jdbc.Driver";
 	private final String dbname = "handgun";
 	private final String url = "jdbc:mysql://localhost:3306/"+dbname;
@@ -28,7 +28,8 @@ public class Conexao{
 				return false;
 			}
 			
-		}
+	}
+	
 	public void close(){
 		try{
 			c.close();

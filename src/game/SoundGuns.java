@@ -208,29 +208,7 @@ public class SoundGuns {
 			e.printStackTrace();
 		}
 	}
-	public void shotgun() {
-		
-		try {
-			
-			audioStream = AudioSystem.getAudioInputStream(getClass().getResource("/game/sons/shotgun.wav"));
-			
-			clip = AudioSystem.getClip();
-			
-			clip.open(audioStream);
-			
-			clip.start();
-			
-		} catch (UnsupportedAudioFileException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}catch (LineUnavailableException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-	}
+	
 	public void maintheme() {
 		
 		try {

@@ -6,11 +6,14 @@ import java.sql.SQLException;
 
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
+import javax.swing.SwingConstants;
+import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 
 public class Rank {
 
 	public Dados dados;
+	public Conexao conexao;
 	private JTable table;
 	private PreparedStatement statement;
 	private String men, sql;
@@ -26,11 +29,8 @@ public class Rank {
 		dados = new Dados();
 		
 		InicializarComponentes();
-		DefinirEventos();
 		
 	}
-
-	Conexao conexao = new Conexao();
 
 	public String atualizar(int operacao) {
 		men = "Operação realizada com sucesso ";
@@ -64,25 +64,42 @@ public class Rank {
 	
 	public void InicializarComponentes() {
 		try {
+			
 			if (conexao.getConnection()) {
 				tablemodel = new DefaultTableModel(new String[] {}, 0) {
 					public boolean isCellEditable(int col, int row) {
 						return false;
 					}
 				};
+				
 				table = new JTable(tablemodel);
-				String query = "select * from dados";
+				String query = "select * from dados order by pontuacao";
 				PreparedStatement ps = conexao.c.prepareStatement(query);
 				ResultSet rs = ps.executeQuery();
 				for (int i = 1; i <= rs.getMetaData().getColumnCount(); i++) {
 					tablemodel.addColumn(rs.getMetaData().getColumnName(i));
 				}
+				
 				while (rs.next()) {
 					String[] dados = new String[rs.getMetaData().getColumnCount()];
 					for (int i = 1; i <= rs.getMetaData().getColumnCount(); i++) {
 						dados[i - 1] = rs.getString(i);
 					}
 					tablemodel.addRow(dados);
+				}
+				
+				table.getTableHeader().setReorderingAllowed(false);
+				table.setOpaque(false);
+				
+				DefaultTableCellRenderer renderer = new DefaultTableCellRenderer();
+				renderer.setOpaque(false);
+				renderer.setHorizontalAlignment(SwingConstants.CENTER);
+				
+				for(int i = 0; i < rs.getMetaData().getColumnCount(); i++) {
+					
+					table.getColumnModel().getColumn(i).setCellRenderer(renderer);
+					table.getColumnModel().getColumn(i).setResizable(false);
+			
 				}
 
 			}
@@ -103,7 +120,4 @@ public class Rank {
 		
 	}
 	
-	private void DefinirEventos() {
-
-	}
 }
