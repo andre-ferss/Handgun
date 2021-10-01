@@ -17,7 +17,7 @@ public class Splash {
 
 	public Splash() {
 		// INSTANCIANDO GIF
-		logo = new ImageIcon(getClass().getResource("loading.gif"));
+		logo = new ImageIcon(getClass().getResource("\\imagens\\Loading.gif"));
 		// INSTANCIANDO JANELA
 		JWindow janelaSplash = new JWindow();
 		// INSERINDO O GIF

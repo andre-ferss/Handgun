@@ -5,7 +5,6 @@ import java.awt.Font;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import javax.swing.JScrollPane;
@@ -21,6 +20,7 @@ public class Rank {
 	private JTable table;
 	private PreparedStatement statement;
 	private String men, sql;
+	private String[] dadosDB;
 	private DefaultTableModel tablemodel;
 	private JScrollPane scrollpane;
 	private ImageIcon fundotable;
@@ -79,25 +79,27 @@ public class Rank {
 				};
 				
 				table = new JTable(tablemodel);
-				String query = "select * from dados order by pontuacao";
+				String query = "select * from dados order by pontuacao desc";
 				PreparedStatement ps = conexao.c.prepareStatement(query);
 				ResultSet rs = ps.executeQuery();
+				
 				for (int i = 1; i <= rs.getMetaData().getColumnCount(); i++) {
 					tablemodel.addColumn(rs.getMetaData().getColumnName(i));
 				}
 				
 				while (rs.next()) {
-					String[] dados = new String[rs.getMetaData().getColumnCount()];
+					dadosDB = new String[rs.getMetaData().getColumnCount()];
 					for (int i = 1; i <= rs.getMetaData().getColumnCount(); i++) {
-						dados[i - 1] = rs.getString(i);
+						dadosDB[i - 1] = rs.getString(i);
 					}
-					tablemodel.addRow(dados);
+					tablemodel.addRow(dadosDB);
 				}
+				
 				table.getTableHeader().setReorderingAllowed(false);
 				table.setFont(new Font("Adventure", 0, 20));
 				table.setRowHeight(30);
 				table.getTableHeader().setFont(new Font("Adventure", 0, 20));
-				table.getTableHeader().setBackground(new Color(0,100,0));
+				table.getTableHeader().setBackground(new Color(47,79,79));
 				table.getTableHeader().setForeground(Color.WHITE);
 				table.setOpaque(false);
 				fundotable = new ImageIcon(getClass().getResource("/game/imagens/fundorank.jpg"));
@@ -109,25 +111,26 @@ public class Rank {
 				DefaultTableCellRenderer renderer = new DefaultTableCellRenderer();
 				
 				renderer.setHorizontalAlignment(SwingConstants.CENTER);
-				renderer.setBackground(new Color(50,205,50));
+				renderer.setBackground(new Color(46,139,87));
 				for(int i = 0; i < rs.getMetaData().getColumnCount(); i++) {
 					
 					table.getColumnModel().getColumn(i).setWidth(100);
 					table.getColumnModel().getColumn(i).setCellRenderer(renderer);
 					table.getColumnModel().getColumn(i).setResizable(false);
-			
+					
 				}
-
+			
 			}
+			
 		} catch (SQLException error) {
-
+		
 		}
 		
 		scrollpane = new JScrollPane();
 		scrollpane.setFocusable(false);
 		scrollpane.setBounds(270, 0, 270,600);
 		scrollpane.setViewportView(table);
-		scrollpane.getViewport().setBackground(new Color (50,205,50));
+		scrollpane.getViewport().setBackground(new Color (46,139,87));
 		
 	}
 
@@ -136,14 +139,23 @@ public class Rank {
 		return scrollpane;
 		
 	}
+	
 	public JLabel getFundo1() {
 		
 		return fundo1;
 		
 	}
+	
 	public JLabel getFundo2() {
 		
 		return fundo2;
 		
 	}
+	
+	public String[] getDadosDB() {
+		
+		return dadosDB;
+		
+	}
+	
 }

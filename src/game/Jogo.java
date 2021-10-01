@@ -14,7 +14,6 @@ public class Jogo extends JFrame implements MouseListener {
 	private Rank globalRank;
 	private JComboBox comboBox;
 	private Container container;
-	private static Rank r = new Rank();
 	private int score, difficulty, width = 100, height = 100;
 	private JTextField textField = new JTextField();
 	private JButton start, setNickName, mainMenu, guns, levels, rank, btdelete;
@@ -148,16 +147,46 @@ public class Jogo extends JFrame implements MouseListener {
 					difficulty = 1;
 					break;
 				}
-
+				
 				if (textField.getText().equals("")) name = "Player Unknown";
 				else name = textField.getText();
-
+				
+				globalRank = new Rank();
+				
 				System.out.println("Nickname: " + name);
-
-				r.dados.setNickname(name);
-
-				System.out.println(r.atualizar(Rank.INCLUSAO));
-
+				
+				if(globalRank.getDadosDB() != null) {
+					
+					for(int i = 1; i < globalRank.getDadosDB().length; i++) {
+						
+						if(globalRank.getDadosDB()[i - 1].equals(name)) {
+						
+							System.out.println("Already registered");
+							break;
+						
+						}else {
+							
+							if((i + 1) < globalRank.getDadosDB().length) {
+								
+								continue;
+								
+							}
+							
+							globalRank.dados.setNickname(name);
+							System.out.println(globalRank.atualizar(Rank.INCLUSAO));
+						
+						}
+					
+					}
+					
+				}else {
+					
+					globalRank.dados.setNickname(name);
+					System.out.println(globalRank.atualizar(Rank.INCLUSAO));
+					
+				}
+				
+				
 				container.removeAll();
 				container.add(game());
 				container.validate();
@@ -168,8 +197,8 @@ public class Jogo extends JFrame implements MouseListener {
 		btdelete.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 
-				r = new Rank();
-				if (!r.conexao.getConnection()) {
+				globalRank = new Rank();
+				if (!globalRank.conexao.getConnection()) {
 					JOptionPane.showMessageDialog(null, "falha na conexao");
 					System.exit(0);
 				}
@@ -178,9 +207,9 @@ public class Jogo extends JFrame implements MouseListener {
 
 				System.out.println("Nickname Deletado!: " + name);
 
-				r.dados.setNickname(name);
+				globalRank.dados.setNickname(name);
 
-				System.out.println(r.atualizar(Rank.EXCLUSAO));
+				System.out.println(globalRank.atualizar(Rank.EXCLUSAO));
 
 			}
 		});
@@ -282,7 +311,7 @@ public class Jogo extends JFrame implements MouseListener {
 		scoreField.setForeground(Color.WHITE);
 		scoreField.setFont(new Font(newFont.getName(), newFont.getStyle(), 20));
 		
-		timerField = new JLabel("100");
+		timerField = new JLabel("30");
 		timerField.setBounds(750, 10, 30, 30);
 		timerField.setForeground(Color.WHITE);
 		timerField.setFont(new Font(newFont.getName(), newFont.getStyle(), 20));
@@ -503,9 +532,13 @@ public class Jogo extends JFrame implements MouseListener {
 	}
 
 	public static void main(String[] args) {
-
+		
+		new Splash();
+		
+		ImageIcon icon = new ImageIcon("src\\game\\imagens\\handgunIcon.png");
 		Jogo frame = new Jogo();
 		frame.setTitle("Hand-Gun");
+		frame.setIconImage(icon.getImage());
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.setUndecorated(true);
 		frame.setSize(800, 600);
@@ -563,14 +596,25 @@ public class Jogo extends JFrame implements MouseListener {
 					Thread.sleep(200);
 
 					if (Integer.parseInt(timerField.getText()) == 0) {
-
-						System.out.println("pontuacao atualizada!: " + name + score);
-
-						r.dados.setScore(score);
-						r.dados.setNickname(name);
-
-						JOptionPane.showMessageDialog(null, r.atualizar(Rank.ALTERACAO));
-
+						
+						globalRank = new Rank();
+						
+						for(int i = 1; i <= globalRank.getDadosDB().length; i += 2) {
+							
+							System.out.println(score > Integer.parseInt(globalRank.getDadosDB()[i]));
+							
+							if(score > Integer.parseInt(globalRank.getDadosDB()[i])) {
+							
+								globalRank.dados.setScore(score);
+								globalRank.dados.setNickname(name);
+								
+								System.out.println("pontuacao atualizada!: " + score);
+								
+								System.out.println(globalRank.atualizar(Rank.ALTERACAO));
+							
+							}
+						}
+						
 						container.removeAll();
 						container.add(globalRank());
 						container.validate();
