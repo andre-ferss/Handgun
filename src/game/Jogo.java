@@ -18,10 +18,10 @@ public class Jogo extends JFrame implements MouseListener {
 	private JTextField textField = new JTextField();
 	private JButton start, setNickName, mainMenu, guns, levels, rank, btdelete;
 	private String name, gun = "", cenarioNome = "cenario1", alvoNome = "among";
-	private ImageIcon imgselecao1, alvo, cenarioImg, icocenario1, icocenario2, icocenario3, icocenario4, icocenario5, imgmira, imgaim,
+	private ImageIcon imgselecao1, imgselecao2, imgselecao3, imgselecao4, imgselecao5, alvo, cenarioImg, icocenario1, icocenario2, icocenario3, icocenario4, icocenario5, imgmira, imgaim,
 	imgtag, btstart, imgdelete, btnickname, btlevels, btrank, btguns, imgname, imgfundonickname, imgfundolevels, imgfundoguns, 
 	imgbrilhos, imgcaveirinha, imgtiro, imgawp, imgak47, imgblacktail, imgdeagle, imgshotgun, imgm4, imgmp5, namearea, imgmainMenu;
-	private JLabel selecao1, label, cenario, scoreField, timerField, mira, aim, namegame, tag, fundonickname, fundolevels, fundoguns, brilhos, caveirinha,
+	private JLabel selecao1, selecao2, selecao3, selecao4, selecao5, label, cenario, scoreField, timerField, mira, aim, namegame, tag, fundonickname, fundolevels, fundoguns, brilhos, caveirinha,
 	tiro, awp, ak47, blacktail, shotgun, deagle, m4, mp5, fase1, fase2, fase3, fase4, fase5;
 
 	private Font newFont;
@@ -533,6 +533,34 @@ public class Jogo extends JFrame implements MouseListener {
 		selecao1.setVisible(false);
 		pane.add(selecao1);
 		
+		imgselecao2	= new ImageIcon(getClass().getResource("/game/imagens/selacao2.jpg"));
+		selecao2 = new JLabel(imgselecao2);
+		selecao2.setBounds(200, 20, 400, 300);
+		selecao2.addMouseListener(this);
+		selecao2.setVisible(false);
+	    pane.add(selecao2);
+	    
+	    imgselecao3	= new ImageIcon(getClass().getResource("/game/imagens/selecao3.jpg"));
+		selecao3 = new JLabel(imgselecao3);
+		selecao3.setBounds(200, 20, 400, 300);
+		selecao3.addMouseListener(this);
+		selecao3.setVisible(false);
+	    pane.add(selecao3);
+	    
+	    imgselecao4	= new ImageIcon(getClass().getResource("/game/imagens/selecao4.jpg"));
+		selecao4 = new JLabel(imgselecao4);
+		selecao4.setBounds(200, 20, 400, 300);
+		selecao4.addMouseListener(this);
+		selecao4.setVisible(false);
+	    pane.add(selecao4);
+	    
+	    imgselecao5	= new ImageIcon(getClass().getResource("/game/imagens/selecao5.jpg"));
+		selecao5 = new JLabel(imgselecao5);
+		selecao5.setBounds(200, 20, 400, 300);
+		selecao5.addMouseListener(this);
+		selecao5.setVisible(false);
+	    pane.add(selecao5);
+		
 
 		pane.add(fundolevels);
 		return pane;
@@ -872,7 +900,10 @@ public class Jogo extends JFrame implements MouseListener {
 						fase4.setBorder(null);
 						fase5.setBorder(null);
 						selecao1.setVisible(true);
-						
+						selecao2.setVisible(false);
+						selecao3.setVisible(false);
+						selecao4.setVisible(false);
+						selecao5.setVisible(false);
 						break;
 					case "cenario2":
 						alvoNome = "powergroot";
@@ -882,6 +913,11 @@ public class Jogo extends JFrame implements MouseListener {
 						fase3.setBorder(null);
 						fase4.setBorder(null);
 						fase5.setBorder(null);
+						selecao1.setVisible(false);
+						selecao2.setVisible(true);
+						selecao3.setVisible(false);
+						selecao4.setVisible(false);
+						selecao5.setVisible(false);
 						break;
 					case "cenario3":
 						alvoNome = "ghost";
@@ -891,6 +927,11 @@ public class Jogo extends JFrame implements MouseListener {
 						fase1.setBorder(null);
 						fase4.setBorder(null);
 						fase5.setBorder(null);
+						selecao1.setVisible(false);
+						selecao2.setVisible(false);
+						selecao3.setVisible(true);
+						selecao4.setVisible(false);
+						selecao5.setVisible(false);
 						break;
 					case "cenario4":
 						alvoNome = "star";
@@ -900,6 +941,11 @@ public class Jogo extends JFrame implements MouseListener {
 						fase1.setBorder(null);
 						fase3.setBorder(null);
 						fase5.setBorder(null);
+						selecao1.setVisible(false);
+						selecao2.setVisible(false);
+						selecao3.setVisible(false);
+						selecao4.setVisible(true);
+						selecao5.setVisible(false);
 						break;
 					case "cenario5":
 						alvoNome = "tubarao";
@@ -909,6 +955,11 @@ public class Jogo extends JFrame implements MouseListener {
 						fase3.setBorder(null);
 						fase4.setBorder(null);
 						fase1.setBorder(null);
+						selecao1.setVisible(false);
+						selecao2.setVisible(false);
+						selecao3.setVisible(false);
+						selecao4.setVisible(false);
+						selecao5.setVisible(true);
 						break;
 				}
 			
