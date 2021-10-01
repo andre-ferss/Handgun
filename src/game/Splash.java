@@ -25,10 +25,7 @@ public class Splash {
 		Toolkit toolkit = Toolkit.getDefaultToolkit();
 		Dimension dimension = toolkit.getScreenSize();
 		// POSICIONANDO
-		janelaSplash.setBounds((dimension.width - LARGURA_IMG) / 2, (dimension.height - ALTURA_IMG) / 2, LARGURA_IMG,
-				ALTURA_IMG
-
-				);
+		janelaSplash.setBounds((dimension.width - LARGURA_IMG) / 2, (dimension.height - ALTURA_IMG) / 2, LARGURA_IMG, ALTURA_IMG);
 		// VISIBILIDADE
 		janelaSplash.setVisible(true);
 		// TIMER
