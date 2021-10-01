@@ -6,7 +6,6 @@ import java.io.File;
 import java.io.IOException;
 import java.util.Timer;
 import java.util.TimerTask;
-import javax.sound.sampled.Clip;
 import javax.swing.*;
 
 public class Jogo extends JFrame implements MouseListener {
@@ -347,11 +346,14 @@ public class Jogo extends JFrame implements MouseListener {
 
 	public JPanel globalRank() {
 
-		pane = new JPanel(new BorderLayout());
+		pane = new JPanel(null);
 		globalRank = new Rank();
 
-		pane.add(globalRank.getScrollPane(), BorderLayout.CENTER);
-		pane.add(mainMenu, BorderLayout.SOUTH);
+		pane.add(globalRank.getScrollPane());
+		mainMenu.setBounds(10,10,100,35);
+		pane.add(mainMenu);
+		pane.add(globalRank.getFundo1());
+		pane.add(globalRank.getFundo2());
 
 		return pane;
 

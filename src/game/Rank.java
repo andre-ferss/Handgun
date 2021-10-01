@@ -1,9 +1,13 @@
 package game;
 
+import java.awt.Color;
+import java.awt.Font;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
+import javax.swing.ImageIcon;
+import javax.swing.JLabel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.SwingConstants;
@@ -19,6 +23,8 @@ public class Rank {
 	private String men, sql;
 	private DefaultTableModel tablemodel;
 	private JScrollPane scrollpane;
+	private ImageIcon fundotable;
+	private JLabel fundo1,fundo2;
 	public static final byte INCLUSAO = 1;
 	public static final byte ALTERACAO = 2;
 	public static final byte EXCLUSAO = 3;
@@ -87,16 +93,26 @@ public class Rank {
 					}
 					tablemodel.addRow(dados);
 				}
-				
 				table.getTableHeader().setReorderingAllowed(false);
+				table.setFont(new Font("Adventure", 0, 20));
+				table.setRowHeight(30);
+				table.getTableHeader().setFont(new Font("Adventure", 0, 20));
+				table.getTableHeader().setBackground(new Color(0,100,0));
+				table.getTableHeader().setForeground(Color.WHITE);
 				table.setOpaque(false);
+				fundotable = new ImageIcon(getClass().getResource("/game/imagens/fundorank.jpg"));
+				fundo1 = new JLabel(fundotable);
+				fundo1.setBounds(0,0,338,600);
+				fundo2 = new JLabel(fundotable);
+				fundo2.setBounds(480,0,338,600);
 				
 				DefaultTableCellRenderer renderer = new DefaultTableCellRenderer();
-				renderer.setOpaque(false);
-				renderer.setHorizontalAlignment(SwingConstants.CENTER);
 				
+				renderer.setHorizontalAlignment(SwingConstants.CENTER);
+				renderer.setBackground(new Color(50,205,50));
 				for(int i = 0; i < rs.getMetaData().getColumnCount(); i++) {
 					
+					table.getColumnModel().getColumn(i).setWidth(100);
 					table.getColumnModel().getColumn(i).setCellRenderer(renderer);
 					table.getColumnModel().getColumn(i).setResizable(false);
 			
@@ -109,8 +125,9 @@ public class Rank {
 		
 		scrollpane = new JScrollPane();
 		scrollpane.setFocusable(false);
-		scrollpane.setBounds(100, 100, 500, 300);
+		scrollpane.setBounds(270, 0, 270,600);
 		scrollpane.setViewportView(table);
+		scrollpane.getViewport().setBackground(new Color (50,205,50));
 		
 	}
 
@@ -119,5 +136,14 @@ public class Rank {
 		return scrollpane;
 		
 	}
-	
+	public JLabel getFundo1() {
+		
+		return fundo1;
+		
+	}
+	public JLabel getFundo2() {
+		
+		return fundo2;
+		
+	}
 }
