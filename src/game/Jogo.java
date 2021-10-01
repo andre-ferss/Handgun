@@ -10,6 +10,7 @@ import javax.swing.*;
 
 public class Jogo extends JFrame implements MouseListener {
 
+	private Rank r;
 	private JPanel pane;
 	private String name;
 	private Rank globalRank;
@@ -17,12 +18,15 @@ public class Jogo extends JFrame implements MouseListener {
 	private Container container;
 	private int score, difficulty;
 	private JTextField textField = new JTextField();
-	private JButton start, setNickName, mainMenu, guns, levels, rank;
-	private ImageIcon img, imgmira, imgaim, imgcenario, imgcenario1, imgtag, btstart, btnickname, btlevels, btrank,
-	btguns, imgname, imgfundonickname, imgfundolevels, imgfundoguns, imgbrilhos, imgcaveirinha, imgtiro, imgawp, imgak47, imgblacktail,
-	imgdeagle, imgshotgun, imgm4, imgmp5, namearea ,imgmainMenu;
-	private JLabel label, timerField, mira, aim, namegame, cenario1, tag, fundonickname, fundolevels, fundoguns, brilhos, caveirinha, tiro,
-	awp, ak47, blacktail, shotgun, deagle, m4, mp5, fase1, fase2, fase3, fase4, fase5;
+	private JButton start, setNickName, mainMenu, guns, levels, rank, startbd, btdelete;
+	private ImageIcon alvo1, alvo2, alvo3, alvo4, alvo5, alvo6, alvo7, alvo8, imgcenario2, imgcenario3, imgcenario4,
+	imgcenario5, icocenario1, icocenario2, icocenario3, icocenario4, icocenario5, imgmira, imgaim, imgcenario,
+	imgcenario1, imgtag, btstart, imgdelete, btnickname, btlevels, btrank, btguns, imgname, imgfundonickname,
+	imgfundolevels, imgfundoguns, imgbrilhos, imgcaveirinha, imgtiro, imgawp, imgak47, imgblacktail, imgdeagle,
+	imgshotgun, imgm4, imgmp5, namearea, imgmainMenu;
+	private JLabel label, cenario1, cenario2, cenario3, cenario4, cenario5, timerField, mira, aim, namegame, tag,
+	fundonickname, fundolevels, fundoguns, brilhos, caveirinha, tiro, awp, ak47, blacktail, shotgun, deagle, m4,
+	mp5, fase1, fase2, fase3, fase4, fase5;
 
 	private Font newFont;
 	private GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
@@ -86,12 +90,6 @@ public class Jogo extends JFrame implements MouseListener {
 		comboBox.setFont(new Font(newFont.getName(), newFont.getStyle(), 20));
 		pane.add(comboBox);
 
-		btstart = new ImageIcon(getClass().getResource("/game/imagens/btstart.jpg"));
-		start = new JButton(btstart);
-		start.setFocusable(false);
-		start.setBounds(350, 550, 100, 35);
-		pane.add(start);
-
 		btnickname = new ImageIcon(getClass().getResource("/game/imagens/btnickname.jpg"));
 		setNickName = new JButton(btnickname);
 		setNickName.setFocusable(false);
@@ -116,8 +114,17 @@ public class Jogo extends JFrame implements MouseListener {
 		guns.setBounds(50, 110, 100, 35);
 		pane.add(guns);
 
+		btstart = new ImageIcon(getClass().getResource("/game/imagens/btstart.jpg"));
+		startbd = new JButton(btstart);
+		startbd.setBounds(350, 550, 100, 35);
+		pane.add(startbd);
+
 		pane.add(mira);
 		pane.add(aim);
+
+		imgdelete = new ImageIcon(getClass().getResource("/game/imagens/btdelete.jpg"));
+		btdelete = new JButton(imgdelete);
+		btdelete.setBounds(450, 500, 100, 35);
 
 		imgmainMenu = new ImageIcon(getClass().getResource("/game/imagens/btmenu.jpg"));
 		mainMenu = new JButton(imgmainMenu);
@@ -128,7 +135,7 @@ public class Jogo extends JFrame implements MouseListener {
 
 	private void definirEventos() {
 
-		start.addActionListener(new ActionListener() {
+		startbd.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 
 				score = 0;
@@ -145,16 +152,47 @@ public class Jogo extends JFrame implements MouseListener {
 					break;
 				}
 
+				r = new Rank();
+				if (!r.conexao.getConnection()) {
+					JOptionPane.showMessageDialog(null, "falha na conexao");
+					System.exit(0);
+				}
+
 				if (textField.getText().equals(""))
 					name = "Player Unknown";
+
 				else
 					name = textField.getText();
 
 				System.out.println("Nickname: " + name);
 
+				r.dados.setNickname(name);
+
+				JOptionPane.showMessageDialog(null, r.atualizar(Rank.INCLUSAO));
+
 				container.removeAll();
 				container.add(game());
 				container.validate();
+
+			}
+		});
+
+		btdelete.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+
+				r = new Rank();
+				if (!r.conexao.getConnection()) {
+					JOptionPane.showMessageDialog(null, "falha na conexao");
+					System.exit(0);
+				}
+
+				name = textField.getText();
+
+				System.out.println("Nickname Deletado!: " + name);
+
+				r.dados.setNickname(name);
+
+				JOptionPane.showMessageDialog(null, r.atualizar(Rank.EXCLUSAO));
 
 			}
 		});
@@ -243,12 +281,33 @@ public class Jogo extends JFrame implements MouseListener {
 
 		sons.getClip().stop();
 
-		img = new ImageIcon(getClass().getResource("/game/imagens/among.gif"));
-		label = new JLabel(img);
+		alvo1 = new ImageIcon(getClass().getResource("/game/imagens/among.gif"));
+		alvo2 = new ImageIcon(getClass().getResource("/game/imagens/ghost.gif"));
+		alvo3 = new ImageIcon(getClass().getResource("/game/imagens/powergroot.gif"));
+		alvo4 = new ImageIcon(getClass().getResource("/game/imagens/star.gif"));
+		alvo5 = new ImageIcon(getClass().getResource("/game/imagens/tubarao.gif"));
+
+		label = new JLabel(alvo1);
 
 		imgcenario1 = new ImageIcon(getClass().getResource("/game/imagens/cenario1.jpg"));
 		cenario1 = new JLabel(imgcenario1);
 		cenario1.setBounds(0, 0, 1067, 600);
+
+		imgcenario2 = new ImageIcon(getClass().getResource("/game/imagens/cenario2.jpg"));
+		cenario2 = new JLabel(imgcenario1);
+		cenario2.setBounds(0, 0, 1067, 600);
+
+		imgcenario3 = new ImageIcon(getClass().getResource("/game/imagens/cenario3.jpg"));
+		cenario3 = new JLabel(imgcenario1);
+		cenario3.setBounds(0, 0, 1067, 600);
+
+		imgcenario4 = new ImageIcon(getClass().getResource("/game/imagens/cenario4.jpg"));
+		cenario4 = new JLabel(imgcenario1);
+		cenario4.setBounds(0, 0, 1067, 600);
+
+		imgcenario5 = new ImageIcon(getClass().getResource("/game/imagens/cenario5.jpg"));
+		cenario5 = new JLabel(imgcenario1);
+		cenario5.setBounds(0, 0, 1067, 600);
 
 		timerField = new JLabel("100");
 		timerField.setBounds(750, 10, 30, 30);
@@ -292,14 +351,15 @@ public class Jogo extends JFrame implements MouseListener {
 		tiro = new JLabel(imgtiro);
 		tiro.setBounds(212, 271, 63, 60);
 
-		start.setBounds(350, 450, 100, 35);
+		startbd.setBounds(250, 500, 100, 35);
 		mainMenu.setBounds(20, 20, 100, 35);
 
 		new AnimatedTextLabel(label, "Enter your nick name: ").start();
 
 		pane = new JPanel(null);
 		pane.add(textField);
-		pane.add(start);
+		pane.add(startbd);
+		pane.add(btdelete);
 		pane.add(label);
 		pane.add(tiro);
 		pane.add(tag);
@@ -333,7 +393,7 @@ public class Jogo extends JFrame implements MouseListener {
 		imgfundoguns = new ImageIcon(getClass().getResource("/game/imagens/fundoguns.gif"));
 		fundoguns = new JLabel(imgfundoguns);
 		fundoguns.setBounds(0, 0, 800, 600);
-		
+
 		mainMenu.setBounds(20, 20, 100, 35);
 		pane.add(mainMenu);
 
@@ -361,9 +421,9 @@ public class Jogo extends JFrame implements MouseListener {
 		pane.add(awp);
 
 		imgdeagle = new ImageIcon(getClass().getResource("/game/imagens/deagle.gif"));
-		deagle  = new JLabel("Desert Eagle", imgdeagle, JLabel.CENTER);
-		deagle .setHorizontalTextPosition(JLabel.CENTER);
-		deagle .setVerticalTextPosition(JLabel.BOTTOM);
+		deagle = new JLabel("Desert Eagle", imgdeagle, JLabel.CENTER);
+		deagle.setHorizontalTextPosition(JLabel.CENTER);
+		deagle.setVerticalTextPosition(JLabel.BOTTOM);
 		deagle.setFont(new Font(newFont.getName(), newFont.getStyle(), 30));
 		deagle.setForeground(Color.WHITE);
 		deagle.setBounds(320, 380, 200, 250);
@@ -386,7 +446,7 @@ public class Jogo extends JFrame implements MouseListener {
 		blacktail.setForeground(Color.WHITE);
 		blacktail.setBounds(630, 300, 200, 250);
 		pane.add(blacktail);
-		
+
 		imgm4 = new ImageIcon(getClass().getResource("/game/imagens/m4.gif"));
 		m4 = new JLabel("M4", imgm4, JLabel.CENTER);
 		m4.setHorizontalTextPosition(JLabel.CENTER);
@@ -395,7 +455,7 @@ public class Jogo extends JFrame implements MouseListener {
 		m4.setForeground(Color.WHITE);
 		m4.setBounds(0, 30, 200, 250);
 		pane.add(m4);
-		
+
 		imgmp5 = new ImageIcon(getClass().getResource("/game/imagens/mp5.gif"));
 		mp5 = new JLabel("MP5", imgmp5, JLabel.CENTER);
 		mp5.setHorizontalTextPosition(JLabel.CENTER);
@@ -404,10 +464,9 @@ public class Jogo extends JFrame implements MouseListener {
 		mp5.setForeground(Color.WHITE);
 		mp5.setBounds(580, 30, 200, 250);
 		pane.add(mp5);
-		
 
 		pane.add(fundoguns);
-		
+
 		return pane;
 
 	}
@@ -415,43 +474,44 @@ public class Jogo extends JFrame implements MouseListener {
 	public JPanel levels() {
 
 		pane = new JPanel(null);
-		
+
 		namearea = new ImageIcon(getClass().getResource("/game/imagens/phases.png"));
 		label = new JLabel(namearea);
 		label.setBounds(550, 0, 318, 100);
 		pane.add(label);
 
 		imgfundolevels = new ImageIcon(getClass().getResource("/game/imagens/fundolevels.gif"));
-		fundolevels = new JLabel();
+		fundolevels = new JLabel(imgfundolevels);
 		fundolevels.setBounds(0, 0, 800, 600);
-		
+
 		imgcenario = new ImageIcon(getClass().getResource("/game/imagens/cenario1.jpg"));
 
 		mainMenu.setBounds(20, 20, 100, 35);
 		pane.add(mainMenu);
 
-		label = new JLabel("Fases");
-		label.setBounds(450, 50, 130, 20);
-		pane.add(label);
-
-		fase1 = new JLabel(imgcenario);
-		fase1.setBounds(100, 200, 80, 20);
+		icocenario1 = new ImageIcon(getClass().getResource("/game/imagens/ico1.jpg"));
+		fase1 = new JLabel(icocenario1);
+		fase1.setBounds(80, 300, 150, 100);
 		pane.add(fase1);
 
-		fase2 = new JLabel();
-		fase2.setBounds(280, 200, 80, 20);
+		icocenario2 = new ImageIcon(getClass().getResource("/game/imagens/ico2.jpg"));
+		fase2 = new JLabel(icocenario2);
+		fase2.setBounds(320, 300, 150, 100);
 		pane.add(fase2);
 
-		fase3 = new JLabel();
-		fase3.setBounds(460, 200, 80, 20);
+		icocenario3 = new ImageIcon(getClass().getResource("/game/imagens/ico3.jpg"));
+		fase3 = new JLabel(icocenario3);
+		fase3.setBounds(560, 300, 150, 100);
 		pane.add(fase3);
 
-		fase4 = new JLabel();
-		fase4.setBounds(640, 200, 80, 20);
+		icocenario4 = new ImageIcon(getClass().getResource("/game/imagens/ico4.jpg"));
+		fase4 = new JLabel(icocenario4);
+		fase4.setBounds(200, 450, 150, 100);
 		pane.add(fase4);
 
-		fase5 = new JLabel();
-		fase5.setBounds(820, 200, 80, 20);
+		icocenario5 = new ImageIcon(getClass().getResource("/game/imagens/ico5.jpg"));
+		fase5 = new JLabel(icocenario5);
+		fase5.setBounds(450, 450, 150, 100);
 		pane.add(fase5);
 
 		pane.add(fundolevels);
@@ -520,6 +580,19 @@ public class Jogo extends JFrame implements MouseListener {
 					Thread.sleep(200);
 
 					if (Integer.parseInt(timerField.getText()) == 0) {
+
+						r = new Rank();
+						if (!r.conexao.getConnection()) {
+							JOptionPane.showMessageDialog(null, "falha na conexao");
+							System.exit(0);
+						}
+
+						System.out.println("pontuacao atualizada!: " + name + score);
+
+						r.dados.setScore(score);
+						r.dados.setNickname(name);
+
+						JOptionPane.showMessageDialog(null, r.atualizar(Rank.ALTERACAO));
 
 						container.removeAll();
 						container.add(globalRank());
@@ -606,8 +679,8 @@ public class Jogo extends JFrame implements MouseListener {
 					}
 
 					if (timerField.getText().equals("0"))
-						break;
 
+						break;
 				}
 
 			} catch (Exception e) {
@@ -647,7 +720,6 @@ public class Jogo extends JFrame implements MouseListener {
 		@Override
 		public void mouseEntered(MouseEvent e) {
 			// TODO Auto-generated method stub
-
 		}
 
 		@Override

@@ -2,7 +2,7 @@ package game;
 
 import java.sql.*;
 import javax.swing.JOptionPane;
-public class conexao{
+public class Conexao{
 	
 	public Connection c = null;
 	private final String driver = "com.mysql.jdbc.Driver";

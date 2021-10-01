@@ -1,35 +1,67 @@
 package game;
 
-import java.awt.Font;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-import javax.swing.JButton;
-import javax.swing.JFrame;
-import javax.swing.JLabel;
-import javax.swing.JOptionPane;
-import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
-
 import javax.swing.table.DefaultTableModel;
 
 public class Rank {
 
+	public Dados dados;
 	private JTable table;
+	private PreparedStatement statement;
+	private String men, sql;
 	private DefaultTableModel tablemodel;
 	private JScrollPane scrollpane;
+	public static final byte INCLUSAO = 1;
+	public static final byte ALTERACAO = 2;
+	public static final byte EXCLUSAO = 3;
 	
 	public Rank() {
+		
+		conexao = new Conexao();
+		dados = new Dados();
 		
 		InicializarComponentes();
 		DefinirEventos();
 		
 	}
 
-	conexao conexao = new conexao();
+	Conexao conexao = new Conexao();
 
+	public String atualizar(int operacao) {
+		men = "Operação realizada com sucesso ";
+		try {
+			if(operacao == INCLUSAO) {
+				sql = "insert into dados (nickname) values (?)";
+				statement = conexao.c.prepareStatement(sql);
+				statement.setString(1, dados.getNickname());
+				
+			} else if(operacao == ALTERACAO) {
+				sql = "update dados set pontuacao = ? where nickname = ?";
+				statement = conexao.c.prepareStatement(sql);
+				statement.setInt(1, dados.getScore());
+				statement.setString(2, dados.getNickname());
+				
+			} else if(operacao == EXCLUSAO) {
+				sql = "delete from dados where nickname =?";
+				statement = conexao.c.prepareStatement(sql);
+				statement.setString(1,dados.getNickname());
+		
+			}
+			if (statement.executeUpdate() == 0) {
+				men = "Falha na operação";
+			}
+			
+		} catch(SQLException erro) {
+			men = "Falha na operação " + erro.toString();
+		}
+		return men;
+	}
+	
 	public void InicializarComponentes() {
 		try {
 			if (conexao.getConnection()) {
