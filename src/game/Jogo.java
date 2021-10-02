@@ -630,8 +630,9 @@ public class Jogo extends JFrame implements MouseListener {
 								globalRank.dados.setNickname(name);
 								
 								System.out.println("pontuacao atualizada!: " + score);
-								
 								System.out.println(globalRank.atualizar(Rank.ALTERACAO));
+								
+								break;
 							
 							}
 						}
