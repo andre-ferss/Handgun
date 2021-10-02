@@ -5,6 +5,9 @@ import java.awt.Font;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
+
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import javax.swing.JScrollPane;
@@ -18,13 +21,12 @@ public class Rank {
 	public Dados dados;
 	public Conexao conexao;
 	private JTable table;
-	private PreparedStatement statement;
 	private String men, sql;
-	private String[] dadosDB;
+	private String[] playerData;
+	private List <String> list = new ArrayList<String>();
 	private DefaultTableModel tablemodel;
 	private JScrollPane scrollpane;
-	private ImageIcon fundotable;
-	private JLabel fundo1,fundo2;
+	private PreparedStatement statement;
 	public static final byte INCLUSAO = 1;
 	public static final byte ALTERACAO = 2;
 	public static final byte EXCLUSAO = 3;
@@ -45,7 +47,6 @@ public class Rank {
 				sql = "insert into dados (nickname) values (?)";
 				statement = conexao.c.prepareStatement(sql);
 				statement.setString(1, dados.getNickname());
-				
 			} else if(operacao == ALTERACAO) {
 				sql = "update dados set pontuacao = ? where nickname = ?";
 				statement = conexao.c.prepareStatement(sql);
@@ -56,7 +57,6 @@ public class Rank {
 				sql = "delete from dados where nickname =?";
 				statement = conexao.c.prepareStatement(sql);
 				statement.setString(1,dados.getNickname());
-		
 			}
 			if (statement.executeUpdate() == 0) {
 				men = "Falha na operação";
@@ -88,25 +88,21 @@ public class Rank {
 				}
 				
 				while (rs.next()) {
-					dadosDB = new String[rs.getMetaData().getColumnCount()];
+					String[] dadosDB = new String[rs.getMetaData().getColumnCount()];
 					for (int i = 1; i <= rs.getMetaData().getColumnCount(); i++) {
 						dadosDB[i - 1] = rs.getString(i);
+						list.add(rs.getString(i));
 					}
 					tablemodel.addRow(dadosDB);
 				}
 				
-				table.getTableHeader().setReorderingAllowed(false);
-				table.setFont(new Font("Adventure", 0, 20));
 				table.setRowHeight(30);
+				table.setFont(new Font("Adventure", 0, 18));
+				table.setForeground(Color.BLACK);
+				table.getTableHeader().setReorderingAllowed(false);
 				table.getTableHeader().setFont(new Font("Adventure", 0, 20));
 				table.getTableHeader().setBackground(new Color(47,79,79));
 				table.getTableHeader().setForeground(Color.WHITE);
-				table.setOpaque(false);
-				fundotable = new ImageIcon(getClass().getResource("/game/imagens/fundorank.jpg"));
-				fundo1 = new JLabel(fundotable);
-				fundo1.setBounds(0,0,338,600);
-				fundo2 = new JLabel(fundotable);
-				fundo2.setBounds(480,0,338,600);
 				
 				DefaultTableCellRenderer renderer = new DefaultTableCellRenderer();
 				
@@ -128,7 +124,7 @@ public class Rank {
 		
 		scrollpane = new JScrollPane();
 		scrollpane.setFocusable(false);
-		scrollpane.setBounds(270, 0, 270,600);
+		scrollpane.setBounds(267, 0, 270,600);
 		scrollpane.setViewportView(table);
 		scrollpane.getViewport().setBackground(new Color (46,139,87));
 		
@@ -140,21 +136,13 @@ public class Rank {
 		
 	}
 	
-	public JLabel getFundo1() {
-		
-		return fundo1;
-		
-	}
-	
-	public JLabel getFundo2() {
-		
-		return fundo2;
-		
-	}
-	
 	public String[] getDadosDB() {
 		
-		return dadosDB;
+		playerData = new String[list.size()];
+		
+		list.toArray(playerData);
+		
+		return playerData;
 		
 	}
 	

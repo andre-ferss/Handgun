@@ -19,10 +19,10 @@ public class Jogo extends JFrame implements MouseListener {
 	private JButton start, setNickName, mainMenu, guns, levels, rank, btdelete;
 	private String name, gun = "", cenarioNome = "cenario1", alvoNome = "among";
 	private ImageIcon imgselecao1, imgselecao2, imgselecao3, imgselecao4, imgselecao5, alvo, cenarioImg, icocenario1, icocenario2, icocenario3, icocenario4, icocenario5, imgmira, imgaim,
-	imgtag, btstart, imgdelete, btnickname, btlevels, btrank, btguns, imgname, imgfundonickname, imgfundolevels, imgfundoguns, 
+	imgtag, btstart, imgdelete, btnickname, btlevels, btrank, btguns, imgname, imgfundonickname, imgfundolevels, imgfundoguns, fundotable, 
 	imgbrilhos, imgcaveirinha, imgtiro, imgawp, imgak47, imgblacktail, imgdeagle, imgshotgun, imgm4, imgmp5, namearea, imgmainMenu;
-	private JLabel selecao1, selecao2, selecao3, selecao4, selecao5, label, cenario, scoreField, timerField, mira, aim, namegame, tag, fundonickname, fundolevels, fundoguns, brilhos, caveirinha,
-	tiro, awp, ak47, blacktail, shotgun, deagle, m4, mp5, fase1, fase2, fase3, fase4, fase5;
+	private JLabel selecao, label, cenario, scoreField, timerField, mira, aim, namegame, tag, fundonickname, fundolevels, fundoguns, brilhos, caveirinha,
+	tiro, awp, ak47, blacktail, shotgun, deagle, m4, mp5, fase1, fase2, fase3, fase4, fase5, fundo1, fundo2;
 
 	private Font newFont;
 	private GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
@@ -198,10 +198,6 @@ public class Jogo extends JFrame implements MouseListener {
 			public void actionPerformed(ActionEvent arg0) {
 
 				globalRank = new Rank();
-				if (!globalRank.conexao.getConnection()) {
-					JOptionPane.showMessageDialog(null, "falha na conexao");
-					System.exit(0);
-				}
 
 				name = textField.getText();
 
@@ -376,13 +372,23 @@ public class Jogo extends JFrame implements MouseListener {
 	public JPanel globalRank() {
 
 		pane = new JPanel(null);
+		
 		globalRank = new Rank();
-
 		pane.add(globalRank.getScrollPane());
+		
 		mainMenu.setBounds(10,10,100,35);
+		start.setBounds(690, 10, 100, 35);
 		pane.add(mainMenu);
-		pane.add(globalRank.getFundo1());
-		pane.add(globalRank.getFundo2());
+		pane.add(start);
+		
+		fundotable = new ImageIcon(getClass().getResource("/game/imagens/fundorank.jpg"));
+		fundo1 = new JLabel(fundotable);
+		fundo1.setBounds(-35, 0, 338, 600);
+		fundo2 = new JLabel(fundotable);
+		fundo2.setBounds(500, 0, 338, 600);
+		
+		pane.add(fundo1);
+		pane.add(fundo2);
 
 		return pane;
 
@@ -526,43 +532,24 @@ public class Jogo extends JFrame implements MouseListener {
 		fase5.addMouseListener(this);
 		pane.add(fase5);
 		
+		selecao = new JLabel();
+		selecao.setBounds(200, 50, 400, 250);
+		selecao.setBorder(BorderFactory.createMatteBorder(3, 3, 3, 3, Color.GREEN));
+		selecao.addMouseListener(this);
+		pane.add(selecao);
+		
 		imgselecao1	= new ImageIcon(getClass().getResource("/game/imagens/selecao1.jpg"));
-		selecao1 = new JLabel(imgselecao1);
-		selecao1.setBounds(200, 20, 400, 300);
-		selecao1.addMouseListener(this);
-		selecao1.setVisible(false);
-		pane.add(selecao1);
 		
 		imgselecao2	= new ImageIcon(getClass().getResource("/game/imagens/selacao2.jpg"));
-		selecao2 = new JLabel(imgselecao2);
-		selecao2.setBounds(200, 20, 400, 300);
-		selecao2.addMouseListener(this);
-		selecao2.setVisible(false);
-	    pane.add(selecao2);
-	    
+		
 	    imgselecao3	= new ImageIcon(getClass().getResource("/game/imagens/selecao3.jpg"));
-		selecao3 = new JLabel(imgselecao3);
-		selecao3.setBounds(200, 20, 400, 300);
-		selecao3.addMouseListener(this);
-		selecao3.setVisible(false);
-	    pane.add(selecao3);
 	    
 	    imgselecao4	= new ImageIcon(getClass().getResource("/game/imagens/selecao4.jpg"));
-		selecao4 = new JLabel(imgselecao4);
-		selecao4.setBounds(200, 20, 400, 300);
-		selecao4.addMouseListener(this);
-		selecao4.setVisible(false);
-	    pane.add(selecao4);
 	    
 	    imgselecao5	= new ImageIcon(getClass().getResource("/game/imagens/selecao5.jpg"));
-		selecao5 = new JLabel(imgselecao5);
-		selecao5.setBounds(200, 20, 400, 300);
-		selecao5.addMouseListener(this);
-		selecao5.setVisible(false);
-	    pane.add(selecao5);
 		
-
 		pane.add(fundolevels);
+		
 		return pane;
 
 	}
@@ -637,8 +624,6 @@ public class Jogo extends JFrame implements MouseListener {
 						
 						for(int i = 1; i <= globalRank.getDadosDB().length; i += 2) {
 							
-							System.out.println(score > Integer.parseInt(globalRank.getDadosDB()[i]));
-							
 							if(score > Integer.parseInt(globalRank.getDadosDB()[i])) {
 							
 								globalRank.dados.setScore(score);
@@ -707,8 +692,8 @@ public class Jogo extends JFrame implements MouseListener {
 							}
 
 							if (x <= 0 || x >= 800 || y <= 0 || y >= 600) {
-								x = (int) (Math.random() * 400);
-								y = (int) (Math.random() * 300);
+								x = (int) (Math.random() * 700 + 50);
+								y = (int) (Math.random() * 500 + 50);
 								randX *= -1;
 								if (randY < 0) {
 									randY *= -1;
@@ -722,8 +707,8 @@ public class Jogo extends JFrame implements MouseListener {
 						}
 
 					if (x <= 0 || x >= 800 || y <= 0 || y >= 600) {
-						x = (int) (Math.random() * 400);
-						y = (int) (Math.random() * 300);
+						x = (int) (Math.random() * 700 + 50);
+						y = (int) (Math.random() * 500 + 50);
 						randY *= -1;
 						if (randX < 0) {
 							randX *= -1;
@@ -732,9 +717,11 @@ public class Jogo extends JFrame implements MouseListener {
 
 					x -= randX;
 					y -= randY;
+					
 					}
 
 				if (timerField.getText().equals("0")) break;
+				
 				}
 
 			} catch (Exception e) {
@@ -755,8 +742,8 @@ public class Jogo extends JFrame implements MouseListener {
 			if (e.getSource().equals(label)) {
 				
 				score += 10;
-				x = (int) (Math.random() * 400);
-				y = (int) (Math.random() * 300);
+				x = (int) (Math.random() * 700 + 50);
+				y = (int) (Math.random() * 500 + 50);
 				scoreField.setText("Score: " + score);
 
 			}
@@ -899,11 +886,7 @@ public class Jogo extends JFrame implements MouseListener {
 						fase3.setBorder(null);
 						fase4.setBorder(null);
 						fase5.setBorder(null);
-						selecao1.setVisible(true);
-						selecao2.setVisible(false);
-						selecao3.setVisible(false);
-						selecao4.setVisible(false);
-						selecao5.setVisible(false);
+						selecao.setIcon(imgselecao1);
 						break;
 					case "cenario2":
 						alvoNome = "powergroot";
@@ -913,11 +896,7 @@ public class Jogo extends JFrame implements MouseListener {
 						fase3.setBorder(null);
 						fase4.setBorder(null);
 						fase5.setBorder(null);
-						selecao1.setVisible(false);
-						selecao2.setVisible(true);
-						selecao3.setVisible(false);
-						selecao4.setVisible(false);
-						selecao5.setVisible(false);
+						selecao.setIcon(imgselecao2);
 						break;
 					case "cenario3":
 						alvoNome = "ghost";
@@ -927,11 +906,7 @@ public class Jogo extends JFrame implements MouseListener {
 						fase1.setBorder(null);
 						fase4.setBorder(null);
 						fase5.setBorder(null);
-						selecao1.setVisible(false);
-						selecao2.setVisible(false);
-						selecao3.setVisible(true);
-						selecao4.setVisible(false);
-						selecao5.setVisible(false);
+						selecao.setIcon(imgselecao3);
 						break;
 					case "cenario4":
 						alvoNome = "star";
@@ -941,11 +916,7 @@ public class Jogo extends JFrame implements MouseListener {
 						fase1.setBorder(null);
 						fase3.setBorder(null);
 						fase5.setBorder(null);
-						selecao1.setVisible(false);
-						selecao2.setVisible(false);
-						selecao3.setVisible(false);
-						selecao4.setVisible(true);
-						selecao5.setVisible(false);
+						selecao.setIcon(imgselecao4);
 						break;
 					case "cenario5":
 						alvoNome = "tubarao";
@@ -955,11 +926,7 @@ public class Jogo extends JFrame implements MouseListener {
 						fase3.setBorder(null);
 						fase4.setBorder(null);
 						fase1.setBorder(null);
-						selecao1.setVisible(false);
-						selecao2.setVisible(false);
-						selecao3.setVisible(false);
-						selecao4.setVisible(false);
-						selecao5.setVisible(true);
+						selecao.setIcon(imgselecao5);
 						break;
 				}
 			
@@ -975,6 +942,8 @@ public class Jogo extends JFrame implements MouseListener {
 			}
 			
 			if(((JLabel)(e.getSource())).getText() == null) {
+				
+				selecao.setIcon(null);
 				
 				((JLabel)(e.getSource())).setBorder(null); 
 				cenarioNome = "cenario1";
