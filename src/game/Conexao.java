@@ -2,6 +2,7 @@ package game;
 
 import java.sql.*;
 import javax.swing.JOptionPane;
+//CLASSE PARA CONEXAO COM BANCO DE DADOS
 public class Conexao{
 	
 	public Connection c;

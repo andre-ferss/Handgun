@@ -7,9 +7,9 @@ import java.io.IOException;
 import java.util.Timer;
 import java.util.TimerTask;
 import javax.swing.*;
-
+	//CLASSE MAIN
 public class Jogo extends JFrame implements MouseListener {
-	
+	//VARIAVEIS
 	private JPanel pane;
 	private Rank globalRank;
 	private JComboBox comboBox;
@@ -28,16 +28,16 @@ public class Jogo extends JFrame implements MouseListener {
 	private GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
 
 	SoundGuns sons = new SoundGuns();
-
+	//CONSTRUTOR
 	public Jogo() {
 
 		inicializarComponentes();
 		definirEventos();
 
 	}
-
+	//INICIALIZAR COMPONENTES
 	private void inicializarComponentes() {
-
+		//NEW FONT
 		try {
 			newFont = Font.createFont(Font.TRUETYPE_FONT, new File("fonts\\Adventure.otf"));
 		} catch (FontFormatException | IOException e) {
@@ -46,11 +46,11 @@ public class Jogo extends JFrame implements MouseListener {
 		}
 
 		ge.registerFont(newFont);
-
+		
 		container = getContentPane();
 
 		sons.maintheme();
-
+		//ADICIONANDO COMPONENTES AO JPANEL
 		pane = new JPanel(null);
 
 		imgaim = new ImageIcon(getClass().getResource("/game/imagens/aim.gif"));
@@ -128,7 +128,7 @@ public class Jogo extends JFrame implements MouseListener {
 		container.add(pane);
 
 	}
-
+	//EVENTOS
 	private void definirEventos() {
 
 		start.addActionListener(new ActionListener() {
@@ -260,7 +260,7 @@ public class Jogo extends JFrame implements MouseListener {
 		});
 
 	}
-
+	//MENU
 	public JPanel mainMenu() {
 
 		if (!sons.getClip().isRunning()) {
@@ -289,7 +289,7 @@ public class Jogo extends JFrame implements MouseListener {
 		return pane;
 
 	}
-
+	//JOGO
 	public JPanel game() {
 
 		sons.getClip().stop();
@@ -324,7 +324,7 @@ public class Jogo extends JFrame implements MouseListener {
 		return pane;
 
 	}
-
+	//NICKNAME
 	public JPanel nickName() {
 
 		imgfundonickname = new ImageIcon(getClass().getResource("/game/imagens/fundonickname.gif"));
@@ -368,7 +368,7 @@ public class Jogo extends JFrame implements MouseListener {
 		return pane;
 
 	}
-
+	//RANK
 	public JPanel globalRank() {
 
 		pane = new JPanel(null);
@@ -393,7 +393,7 @@ public class Jogo extends JFrame implements MouseListener {
 		return pane;
 
 	}
-
+	//ARMEIRO
 	public JPanel guns() {
 
 		pane = new JPanel(null);
@@ -485,7 +485,7 @@ public class Jogo extends JFrame implements MouseListener {
 		return pane;
 
 	}
-
+	//FASES
 	public JPanel levels() {
 
 		pane = new JPanel(null);
@@ -570,7 +570,7 @@ public class Jogo extends JFrame implements MouseListener {
 		frame.setVisible(true);
 		
 	}
-
+	//ANIMAÇÃO DE TEXTO
 	public class AnimatedTextLabel extends Thread {
 
 		JLabel label;
@@ -604,7 +604,7 @@ public class Jogo extends JFrame implements MouseListener {
 		}
 
 	}
-
+	//TIMER
 	public void startCountDown() {
 
 		Timer timer = new Timer();
@@ -661,7 +661,7 @@ public class Jogo extends JFrame implements MouseListener {
 		return Integer.parseInt(timerField.getText()) - 1;
 
 	}
-
+	//AÇÕES COM MOUSE LISTENER
 	public class PlayGame extends Thread implements MouseListener {
 
 		int x = 500, y = 374, randX = 1, randY = 1;
@@ -746,6 +746,7 @@ public class Jogo extends JFrame implements MouseListener {
 				x = (int) (Math.random() * 700 + 50);
 				y = (int) (Math.random() * 500 + 50);
 				scoreField.setText("Score: " + score);
+				sons.acerto();
 
 			}
 			

@@ -7,7 +7,7 @@ import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import javax.swing.JWindow;
 import javax.swing.SwingConstants;
-
+//LOADING DO JOGO "SPLASHSCREEN"
 public class Splash {
 
 	private final int LARGURA_IMG = 450;

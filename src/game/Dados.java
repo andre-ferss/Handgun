@@ -1,5 +1,5 @@
 package game;
-
+//"CLASSE TRANSPORTADORA"
 public class Dados {
 	private String name;
 	int score;

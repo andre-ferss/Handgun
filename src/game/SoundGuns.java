@@ -7,7 +7,7 @@ import javax.sound.sampled.Clip;
 import javax.sound.sampled.FloatControl;
 import javax.sound.sampled.LineUnavailableException;
 import javax.sound.sampled.UnsupportedAudioFileException;
-
+//CLASSE SONS DO JOGO
 public class SoundGuns {
 	
 	private AudioInputStream audioStream;
@@ -208,7 +208,29 @@ public class SoundGuns {
 			e.printStackTrace();
 		}
 	}
-	
+	public void acerto() {
+		
+		try {
+			
+			audioStream = AudioSystem.getAudioInputStream(getClass().getResource("/game/sons/acerto.wav"));
+			
+			clip = AudioSystem.getClip();
+			
+			clip.open(audioStream);
+			
+			clip.start();
+			
+		} catch (UnsupportedAudioFileException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}catch (LineUnavailableException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
 	public void maintheme() {
 		
 		try {
