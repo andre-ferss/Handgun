@@ -622,12 +622,15 @@ public class Jogo extends JFrame implements MouseListener {
 						
 						globalRank = new Rank();
 						
-						for(int i = 1; i <= globalRank.getDadosDB().length; i += 2) {
+						for(int i = 1; i < globalRank.getDadosDB().length; i+=2) {
+							
+							System.out.println(globalRank.getDadosDB()[i]);
 							
 							if(score > Integer.parseInt(globalRank.getDadosDB()[i])) {
 							
 								globalRank.dados.setScore(score);
 								globalRank.dados.setNickname(name);
+								
 								
 								System.out.println("pontuacao atualizada!: " + score);
 								System.out.println(globalRank.atualizar(Rank.ALTERACAO));
