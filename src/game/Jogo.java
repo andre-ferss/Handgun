@@ -155,7 +155,7 @@ public class Jogo extends JFrame implements MouseListener {
 				
 				System.out.println("Nickname: " + name);
 				
-				if(globalRank.getDadosDB() != null) {
+				if(globalRank.getDadosDB().length > 0) {
 					
 					for(int i = 0; i < globalRank.getDadosDB().length; i+=2) {
 						
