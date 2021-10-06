@@ -307,7 +307,7 @@ public class Jogo extends JFrame implements MouseListener {
 		scoreField.setForeground(Color.WHITE);
 		scoreField.setFont(new Font(newFont.getName(), newFont.getStyle(), 20));
 		
-		timerField = new JLabel("30");
+		timerField = new JLabel("10");
 		timerField.setBounds(750, 10, 30, 30);
 		timerField.setForeground(Color.WHITE);
 		timerField.setFont(new Font(newFont.getName(), newFont.getStyle(), 20));
@@ -624,9 +624,7 @@ public class Jogo extends JFrame implements MouseListener {
 						
 						for(int i = 1; i < globalRank.getDadosDB().length; i+=2) {
 							
-							System.out.println(globalRank.getDadosDB()[i]);
-							
-							if(score > Integer.parseInt(globalRank.getDadosDB()[i])) {
+							if(score > Integer.parseInt(globalRank.getDadosDB()[i]) && name.equals(globalRank.getDadosDB()[i - 1])) {
 							
 								globalRank.dados.setScore(score);
 								globalRank.dados.setNickname(name);
